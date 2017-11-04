@@ -1,12 +1,10 @@
+package oodpAssignment;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
-import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Scanner;
 
 public class Review {
 	private int reviewID;
@@ -42,11 +40,11 @@ public class Review {
 	/**
 	 * Generates a new review.
 	 */
-	public static void writeFile(String movieTitle, int rating, String movieDesc) throws IOException {
+	public static void writeFile(String movieTitle, int rating, String movieDesc, String userEmail) throws IOException {
 	 
 		BufferedWriter bw = new BufferedWriter(new FileWriter("Review.txt", true));
 			
-			bw.write("Movie Title: " + movieTitle + "/" + "Review ID: " + Review.createReviewID() + "/" + "Movie Rating: " +rating + "/" +"Rating Description: " + movieDesc);
+			bw.write("Movie Title: " + movieTitle + "/" + "Review ID: " + Review.createReviewID() + "/" + "Movie Rating: " +rating + "/" +"Rating Description: " + movieDesc + "/" + "Email: " + userEmail);
 			bw.newLine();
 			//bw.write("Review ID: " + Review.createReviewID());
 			//bw.newLine();
@@ -110,7 +108,8 @@ public class Review {
 				 }
 			 }
 			 if (count == 0){
-				 System.out.println("	No review..");
+				 System.out.println();
+				 System.out.println("	----------- There are no reviews made yet! -----------" );
 			 }
 		 }
 		 catch(Exception e)
@@ -147,7 +146,7 @@ public class Review {
 				 }
 			 }
 			 if (count == 0){
-				 System.out.println("	No review..");
+				 System.out.println("	----------- There are no reviews made yet! -----------");
 			 }
 			 else {
 				 avgCount = totalRating / count;
