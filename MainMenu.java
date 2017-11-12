@@ -6,6 +6,9 @@ import java.util.Scanner;
 
 public class MainMenu {
 	
+	/*you can access the user Id through the method .getUserId(); however, the class contains no email.
+	The reviews are independent form the user logged in.
+	We are not required to publish the review history, given a user, therefore it is not a problem*/
 	private static ArrayList<User> allUsers = new ArrayList<User>();
 	private static int size;
 	private static boolean loggedIn = false;
@@ -83,6 +86,7 @@ public class MainMenu {
 	}
 	
 	public static void movieMenu(String movieTitle) throws IOException{
+		//don't try to close the scanners... if more than one ".close()", it generates errors.
 		Scanner sc = new Scanner(System.in);
 		
 		int movieMenuChoice = 0;
@@ -155,7 +159,7 @@ public class MainMenu {
 		}
 	}
 	
-	
+	//function for the user login
 	public static void LogInOutMenu() throws IOException {
 		Scanner sc = new Scanner(System.in);
 		if(loggedIn) {
