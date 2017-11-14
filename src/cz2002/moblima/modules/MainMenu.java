@@ -1,10 +1,11 @@
 package cz2002.moblima.modules;
 
+import cz2002.moblima.controllers.MovieController;
+import cz2002.moblima.entities.Movie;
 import cz2002.moblima.entities.Review;
 import cz2002.moblima.entities.User;
 import cz2002.moblima.utilities.FileIOController;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -18,7 +19,6 @@ public class MainMenu {
 	private static int size;
 	private static boolean loggedIn = false;
 	private static User customerUser;
-	private static File movieFile = new File("movies.txt");
 
     public static void init() {
         Scanner sc = new Scanner(System.in);
@@ -49,16 +49,29 @@ public class MainMenu {
 			switch(mainMenuChoice){
 				case(1): 
 					System.out.println("	----------- View All Movies -----------");
+					int counter = 1;
 					//Display all movies
-					ArrayList<String> movies = new ArrayList<>();
-					FileIOController.readFile(movies, movieFile);
+					ArrayList<Movie> movieArrayList = MovieController.getInstance().getListOfMovies();
+					for (Movie movie : movieArrayList
+							) {
+						System.out.println("Movie Title : (" + counter + ") " + movie.getMovieTitle());
+						counter++;
+					}
 					System.out.println();
 					System.out.println("	Enter number to view movie details: ");
 					//call function to display movie summary
+					int movieChoice = 0;
+					movieChoice = sc.nextInt();
+					System.out.println("Movie Title : " + movieArrayList.get(movieChoice - 1).getMovieTitle());
+					System.out.println("Movie Synopsis : " + movieArrayList.get(movieChoice - 1).getMovieSynopsis());
 					//call movie menu
 					System.out.println();
 					//Change "Thor" to a movie name variable
-					movieMenu("Thor");
+					System.out.println("Do you wish to book this movie? (y/n)");
+					char choice = sc.next().charAt(0);
+					if (choice == 'y' || choice == 'Y') {
+						movieMenu(movieArrayList.get(movieChoice - 1).getMovieTitle());
+					}
 					break;
 				case(2):
 					System.out.println("	----------- View Booking History -----------");
@@ -127,7 +140,7 @@ public class MainMenu {
 				case(1): 
 					System.out.println("	----------- Book Movie -----------");
 					if(loggedIn) {
-						MOBLIMA.initSeatAssignmenntModule();
+						MOBLIMA.initSeatAssignmentModule();
 						System.out.println("	----------- Your booking is successful! -----------");
 					}else {
 						System.out.println("	Login first to access this option");
