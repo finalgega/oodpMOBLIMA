@@ -7,3 +7,4 @@ Movie Title: Thor/Review ID: 6/Movie Rating: 1/Rating Description: Not  bad
 Movie Title: Thor/Review ID: 7/Movie Rating: 1/Rating Description: ok
 Movie Title: Thor/Review ID: 8/Movie Rating: 5/Rating Description: Great movie
 
+Movie Title: Les Choristes/Review ID: 9/Movie Rating: 3/Rating Description: Nice music, plot slow
