@@ -17,7 +17,7 @@ public class TicketPrice {
 	private static double ticketprice;
 	private static File movies;
 
-	public static void init() {
+	public static void initiateChargeForTicket() {
 		TicketPrice t=new TicketPrice();
 	    Boolean flag=true;
 		Scanner sc=new Scanner(System.in);
