@@ -7,27 +7,27 @@ import java.util.Scanner;
 
 public class MOBLIMA {
 
-	public static void initSeatAssignmenntModule() {
-		
+	public static void initSeatAssignmentModule() {
+
 		Scanner sc = new Scanner(System.in);
 		// At the moment 21 * 10 seats is the maximum
 		Cinema c = new Cinema(20);
 		MovieDisplay m = new MovieDisplay(c.getNumberOfSeats());
-		
-		System.out.println("(1) Display seats");
-		System.out.println("(2) Assign a customer to a seat");
-		System.out.println("(3) Remove a seat assignment");
-		System.out.println("(4) Exit");
-		System.out.println("");
-		
+
+
 		int choice = 0;
-		
-		while(choice != 4){
+
+		while (choice != 4) {
+			System.out.println("(1) Display seats");
+			System.out.println("(2) Assign a customer to a seat");
+			System.out.println("(3) Remove a seat assignment");
+			System.out.println("(4) Exit");
+			System.out.println("");
 			System.out.print("  Enter the number of your choice: ");
 			choice = sc.nextInt();
-			
+
 			switch(choice){
-				case(1): 
+				case(1):
 					m.displaySeats();
 					break;
 				case(2):
@@ -39,6 +39,7 @@ public class MOBLIMA {
 					System.out.print("  Please enter Customer ID: ");
 					int custId = sc.nextInt();
 					m.assignSeat(row, col, custId);
+					executePayment();
 					break;
 				case(3):
 					System.out.print("  Enter SeatID to unassign customer from: ");
@@ -46,14 +47,20 @@ public class MOBLIMA {
 					m.unAssignSeat(seat_Id);
 					break;
 				case(4):
+					System.out.println("Exiting seat assignment module");
 					break;
 				default:
 					System.out.println("Invalid input");
 			}
 			System.out.println(" ");
 		}
-		
+
 		sc.close();
-			
+
+	}
+
+	public static boolean executePayment() {
+		TicketPrice.initiateChargeForTicket();
+		return true;
 	}
 }
