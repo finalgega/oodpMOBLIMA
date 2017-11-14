@@ -1,0 +1,27 @@
+Movie: Geostorm
+Movie Type: - 
+Movie Director:Dean Devlin
+Cast: Gerard Butler, Abbie Cornish, Andy Garcia, Ed Harris, Jim Sturgess
+Synopsis: After an unprecedented series of natural disasters threatened the planet, the world’s leaders came together to create an intricate network of satellites to control the global climate and keep everyone safe. But now, something has gone wrong—the system built to protect the Earth is attacking it, and it’s a race against the clock to uncover the real threat before a worldwide geostorm wipes out everything...and everyone along with it.
+Movie Status: now showing
+Showtimes: whatever
+class: 3d
+Past reviews: nice
+overall rating:4.5
+show start: today
+end of showing: tmr
+total sales:4000
+
+Movie: Thor: Ragnarok
+Movie Type:normal
+Movie Director: Taika Waititi
+Cast: Tom Hiddleston, Chris Hemsworth, Cate Blanchett
+Synopsis: Imprisoned, the mighty Thor finds himself in a lethal gladiatorial contest against the Hulk, his former ally. Thor must fight for survival and race against time to prevent the all-powerful Hela from destroying his home and the Asgardian civilization.
+Movie Status: coming soon 
+Showtimes: -
+class:2d
+Past reviews: nice
+overall rating: 4.9
+show start: today
+end of showing: 21/11/2017
+total sales: counting
