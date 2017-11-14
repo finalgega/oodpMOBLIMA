@@ -1,11 +1,13 @@
-package oodpAssignment;
+package cz2002.moblima.modules;
+
+import cz2002.moblima.entities.Review;
 
 import java.io.IOException;
 import java.util.Scanner;
 
 public class MovieMenu {
-	
-	public static void main(String movieTitle) throws IOException{
+
+	public static void init(String movieTitle) throws IOException {
 		Scanner sc = new Scanner(System.in);
 		
 		int movieMenuChoice = 0;
@@ -58,7 +60,7 @@ public class MovieMenu {
 					
 				case(4):
 					System.out.println();
-					MainMenu.main(null);
+//					MainMenu.main(null);
 					break;
 				default:
 					System.out.println("Invalid input");
