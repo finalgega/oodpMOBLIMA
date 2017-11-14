@@ -4,6 +4,7 @@ import cz2002.moblima.entities.Review;
 import cz2002.moblima.entities.User;
 import cz2002.moblima.utilities.FileIOController;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -17,6 +18,7 @@ public class MainMenu {
 	private static int size;
 	private static boolean loggedIn = false;
 	private static User customerUser;
+	private static File movieFile = new File("movies.txt");
 
     public static void init() {
         Scanner sc = new Scanner(System.in);
@@ -38,14 +40,18 @@ public class MainMenu {
 			System.out.println("(5) Login as staff");
 			System.out.println(" * book movie, view and publish reviews");
 			System.out.println("");
+			System.out.println("(6) Exit");
 			
 			System.out.print("  Enter the number of your choice: ");
 			mainMenuChoice = sc.nextInt();
-			
+
+
 			switch(mainMenuChoice){
 				case(1): 
 					System.out.println("	----------- View All Movies -----------");
 					//Display all movies
+					ArrayList<String> movies = new ArrayList<>();
+					FileIOController.readFile(movies, movieFile);
 					System.out.println();
 					System.out.println("	Enter number to view movie details: ");
 					//call function to display movie summary
@@ -58,6 +64,8 @@ public class MainMenu {
 					System.out.println("	----------- View Booking History -----------");
 					//get email to display user's booking history
 					System.out.println("	Enter your email:");
+//					String email = sc.nextLine();
+					System.out.println("THIS FUNCTION DOES NOT WORK!");
 					System.out.println("	----------- Your Booking History -----------");
 					// Display all booking history
 					// If user has not made any prior booking, return "No booking has been made yet!"
@@ -119,6 +127,7 @@ public class MainMenu {
 				case(1): 
 					System.out.println("	----------- Book Movie -----------");
 					if(loggedIn) {
+						MOBLIMA.initSeatAssignmenntModule();
 						System.out.println("	----------- Your booking is successful! -----------");
 					}else {
 						System.out.println("	Login first to access this option");
@@ -219,9 +228,9 @@ public class MainMenu {
 				customerUser = new User(allUsers.size()+1, fN, lN, pW);
 				loggedIn = true;
 				allUsers.add(customerUser);
-                FileIOController.addUsers(customerUser);
-                size++;
-                System.out.println("	----------- Your have succesfully created an account -----------");
+				FileIOController.addUsers(allUsers);
+				size++;
+				System.out.println("	----------- Your have succesfully created an account -----------");
 				System.out.println("	----------- Your customer iD is : "+customerUser.getUserID()+" -----------");
 				break;
 			case(3):

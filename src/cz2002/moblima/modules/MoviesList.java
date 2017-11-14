@@ -1,5 +1,6 @@
 package cz2002.moblima.modules;
 
+import cz2002.moblima.entities.Review;
 import cz2002.moblima.utilities.FileIOController;
 
 import java.io.File;
@@ -201,16 +202,10 @@ public class MoviesList {
 							listoflists.get(k).set(7, "Class: "+ classtype);
 							break;
 						case 9:
-							System.out.println("enter new past reviews");
-							String reviews = sc.next();
-							reviews += sc.nextLine();
-							listoflists.get(k).set(8, "Past Reviews: "+ reviews);
+							Review.ListAllReviews(moviechoice);
 							break;
 						case 10:
-							System.out.println("enter new overall rating");
-							String rating = sc.next();
-							rating += sc.nextLine();
-							listoflists.get(k).set(9, "Overall Rating: "+ rating);
+							Review.OverallRatingInt(moviechoice);
 							break;
 						case 11:
 							System.out.println("enter new show start");

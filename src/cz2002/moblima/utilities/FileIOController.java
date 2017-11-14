@@ -63,7 +63,7 @@ public class FileIOController {
 
     private static final String userFileName = "Users.txt";
 
-    public static void addUsers(User uL) {
+    public static void addUsers(ArrayList<User> uL) {
         File f = new File(userFileName);
         Path myText_path = Paths.get(f.toURI());
         Charset charset = Charset.forName("UTF-8");
@@ -92,7 +92,7 @@ public class FileIOController {
             User u;
             for (int i = 0; i < listS.size(); i++) {
                 splitLine = listS.get(i).split(" ");
-                u = new User(Integer.valueOf(splitLine[0]), splitLine[1], splitLine[2]);
+                u = new User(Integer.valueOf(splitLine[0]), splitLine[1], splitLine[2], "");
                 uL.add(u);
             }
         } catch (IOException e) {
