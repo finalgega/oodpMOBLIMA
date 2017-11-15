@@ -39,7 +39,8 @@ public class Seat {
 	
 	 /**
 	  * @return int - the customer's id.
-	 */
+      *
+      */
 	
 	public int getCustomerId(){
 		return customerId;

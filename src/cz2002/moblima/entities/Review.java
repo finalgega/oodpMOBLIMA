@@ -36,9 +36,9 @@ public class Review {
 	/**
 	 * Generates a new review.
 	 */
-	public static void writeFile(String movieTitle, int rating, String movieDesc, String userEmail) throws IOException {
-	 
-		BufferedWriter bw = new BufferedWriter(new FileWriter("Review.txt", true));
+    public static void writeReview(String movieTitle, int rating, String movieDesc, String userEmail) throws IOException {
+
+        BufferedWriter bw = new BufferedWriter(new FileWriter("Review.txt", true));
 			
 			bw.write("Movie Title: " + movieTitle + "/" + "Review ID: " + Review.createReviewID() + "/" + "Movie Rating: " +rating + "/" +"Rating Description: " + movieDesc + "/" + "Email: " + userEmail);
 			bw.newLine();
@@ -81,9 +81,9 @@ public class Review {
 		 }
 		return count;
 	}
-	
-	public static void ListAllReviews(String movieTitle) {
-		int count = 0;
+
+    public static void listAllReviews(String movieTitle) {
+        int count = 0;
 		String line;
 		 BufferedReader br = null;
 		 try{
@@ -120,9 +120,9 @@ public class Review {
 		 }
       
     }
-	
-	public static void OverallRatingInt(String movieTitle) {
-		int avgCount = 0;
+
+    public static void overallRatingInt(String movieTitle) {
+        int avgCount = 0;
 		int totalRating = 0;
 		int count = 0;
 		int ratingCurr = 0;

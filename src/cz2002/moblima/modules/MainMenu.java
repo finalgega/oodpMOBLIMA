@@ -22,7 +22,7 @@ public class MainMenu {
 
     public static void init() {
         Scanner sc = new Scanner(System.in);
-        System.out.println("----------- Welcome to MOBLIMA -----------");
+        System.out.println("----------- Welcome to SeatAssignmentModule -----------");
         allUsers = FileIOController.readUserFile();
         size = allUsers.size();
 
@@ -140,8 +140,8 @@ public class MainMenu {
 				case(1): 
 					System.out.println("	----------- Book Movie -----------");
 					if(loggedIn) {
-						MOBLIMA.initSeatAssignmentModule();
-						System.out.println("	----------- Your booking is successful! -----------");
+                        SeatAssignmentModule.init();
+                        System.out.println("	----------- Your booking is successful! -----------");
 					}else {
 						System.out.println("	Login first to access this option");
 					}
@@ -150,8 +150,8 @@ public class MainMenu {
 				case(2):
 					System.out.println("	----------- View All Reviews -----------");
 					//call review function
-					Review.ListAllReviews(movieTitle);
-					System.out.println("	----------- End Of All Reviews -----------");
+                    Review.listAllReviews(movieTitle);
+                    System.out.println("	----------- End Of All Reviews -----------");
 					break;
 				case(3):
 					System.out.println();
@@ -171,7 +171,7 @@ public class MainMenu {
 					sc.nextLine();
 					String movieDesc = sc.nextLine();
                     try {
-                        Review.writeFile(movieTitle, rating, movieDesc, userEmail);
+                        Review.writeReview(movieTitle, rating, movieDesc, userEmail);
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
