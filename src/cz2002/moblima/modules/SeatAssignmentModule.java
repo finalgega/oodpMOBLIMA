@@ -5,9 +5,9 @@ import cz2002.moblima.entities.MovieDisplay;
 
 import java.util.Scanner;
 
-public class MOBLIMA {
+public class SeatAssignmentModule {
 
-	public static void initSeatAssignmentModule() {
+    public static void init() {
 
 		Scanner sc = new Scanner(System.in);
 		// At the moment 21 * 10 seats is the maximum

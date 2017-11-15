@@ -202,10 +202,10 @@ public class MoviesList {
 							listoflists.get(k).set(7, "Class: "+ classtype);
 							break;
 						case 9:
-							Review.ListAllReviews(moviechoice);
+							Review.listAllReviews(moviechoice);
 							break;
 						case 10:
-							Review.OverallRatingInt(moviechoice);
+							Review.overallRatingInt(moviechoice);
 							break;
 						case 11:
 							System.out.println("enter new show start");

@@ -3,6 +3,18 @@ package cz2002.moblima.entities;
 public class Movie {
 
     private String movieTitle;
+    private String movieType;
+    private String movieDirector;
+    private String movieCast;
+    private String movieSynopsis;
+    private String movieStatus;
+    private String movieShowtimes;
+    private String movieClass;
+    private String movieReviews;
+    private String overallRating;
+    private String showStart;
+    private String showEnd;
+    private String totalSales;
 
     public Movie(String movieTitle, String movieType, String movieDirector, String movieCast, String movieSynopsis, String movieStatus, String movieShowtimes, String movieClass, String movieReviews, String overallRating, String showStart, String showEnd, String totalSales) {
         this.movieTitle = movieTitle;
@@ -20,18 +32,6 @@ public class Movie {
         this.totalSales = totalSales;
     }
 
-    private String movieType;
-    private String movieDirector;
-    private String movieCast;
-    private String movieSynopsis;
-    private String movieStatus;
-    private String movieShowtimes;
-    private String movieClass;
-    private String movieReviews;
-    private String overallRating;
-    private String showStart;
-    private String showEnd;
-    private String totalSales;
 
 
     public Movie(String movieTitle, String movieType, String movieDirector, String movieCast, String movieSynopsis, String movieStatus, String movieShowtimes, String movieReviews, String overallRating, String showStart, String showEnd, String totalSales) {

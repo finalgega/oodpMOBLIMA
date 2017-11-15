@@ -32,7 +32,7 @@ public class MovieMenu {
 				case(2):
 					System.out.println("	----------- View All Reviews -----------");
 					//call review function
-					Review.ListAllReviews(movieTitle);
+					Review.listAllReviews(movieTitle);
 					System.out.println("	----------- End Of All Reviews -----------");
 					break;
 				case(3):
@@ -52,7 +52,7 @@ public class MovieMenu {
 					System.out.print("	Movie rating description: ");
 					sc.nextLine();
 					String movieDesc = sc.nextLine();
-					Review.writeFile(movieTitle, rating, movieDesc, userEmail);
+					Review.writeReview(movieTitle, rating, movieDesc, userEmail);
 					System.out.println();
 					System.out.print("	----------- Your review submission is successful! -----------");
 					System.out.println();
