@@ -1,12 +1,13 @@
 package cz2002.moblima.entities;
 
 public class Cinema {
-	
-	 /**
+
+    ///	Think of a format for the code.
+    private String cinemaCode;
+    /**
 	 * The number of seats.
-	 */ 
-	
-	private int numberOfSeats;
+      */
+    private int numberOfSeats;
 	
 	 /**
 	 * Creates a new Cinema with the given size.
