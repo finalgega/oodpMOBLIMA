@@ -1,11 +1,19 @@
 package cz2002.moblima.entities;
 
+import cz2002.moblima.entities.Movie;
+import java.util.Date;
+
 public class MovieDisplay {
 	
 	 /**
 	 * The layout of the cinema.
 	 */ 
 	
+	private int displayId;
+	private String cinemaCode;
+	private Date dateDisplayed;
+	private Movie movieDisplayed;
+	private int seatsNumber;
 	private Seat[][] seat;
 	
 	 /**
@@ -14,17 +22,32 @@ public class MovieDisplay {
 	 * @param num - the number of seats for the layout.
 	 */ 
 	
-	public MovieDisplay(int num){
-		seat = new Seat[num / 2][num]; 
+	public MovieDisplay(int Id, int nbrSeats, Movie mdsplyed, String cineCode, Date dt){
+		displayId = Id;
+		movieDisplayed = mdsplyed;
+		cinemaCode = cineCode;
+		dateDisplayed = dt;
+		seatsNumber = nbrSeats;
+		seat = new Seat[nbrSeats / 2][nbrSeats];
 		int count = 0;
-		for(int i = 0; i < num / 2; i++){
-			for(int j = 0; j < num; j++){
+		for(int i = 0; i < nbrSeats / 2; i++){
+			for(int j = 0; j < nbrSeats; j++){
 				seat[i][j] = new Seat((count));
 				count++;
 			}			
 		}
 	}
 	
+	public int getDisplayId() {return displayId;}
+
+	public int getSeatsNumber() {return seatsNumber;}
+
+	public Date getDateDisplayed() {return dateDisplayed;}
+
+	public String getCinemaCode() {return cinemaCode;}
+
+	public Movie getMovieDisplayed() {return movieDisplayed;}
+
 	 /**
 	 * Assigns a seat to a customer. 
 	 * @param row - the row number a seat.
