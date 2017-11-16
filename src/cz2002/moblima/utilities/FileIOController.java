@@ -71,7 +71,7 @@ public class FileIOController {
         User u;
         for (int i = 0; i < uL.size(); i++) {
             u = uL.get(i);
-            lines.add(String.valueOf(u.getUserID()) + " " + u.getFirstName() + " " + u.getLastName());
+            lines.add(String.valueOf(u.getUserID()) + " " + u.getFirstName() + " " + u.getLastName()+ " " + uL.getPassword());
         }
 
         try {
