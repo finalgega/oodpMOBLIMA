@@ -136,24 +136,58 @@ public class MainMenu {
 
         }
         Scanner sc = new Scanner(System.in);
-        System.out.println("Enter Username : ");
-        String username = sc.nextLine();
-        System.out.println("Enter Password : ");
-        String password = sc.nextLine();
-        User user = new User(username, password);
-        boolean isValidAccount = false;
-        for (User usr : staffAccounts
-                ) {
-            if (user.getUsername().contentEquals(usr.getUsername()) && user.getPassword().contentEquals(usr.getPassword())) {
-                isValidAccount = true;
+        int choice = 0;
+        System.out.println("(1) Login as staff");
+        System.out.println("(2) Create new staff account *For demonstration purposes*");
+        choice = sc.nextInt();
+
+        switch (choice) {
+            case 1: {
+                //  To clear the new line character in the buffer
+                sc.nextLine();
+                System.out.println("Enter Username : ");
+                String username = sc.nextLine();
+                System.out.println("Enter Password : ");
+                String password = sc.nextLine();
+                User user = new User(username, password);
+                boolean isValidAccount = false;
+                for (User usr : staffAccounts
+                        ) {
+                    if (user.getUsername().contentEquals(usr.getUsername()) && user.getPassword().contentEquals(usr.getPassword())) {
+                        isValidAccount = true;
+                    }
+                }
+                if (isValidAccount) {
+                    System.out.println("You have successfully logged in as Staff!\nWelcome  " + username);
+                    staffMenu();
+                } else {
+                    System.out.println("Invalid user!");
+                }
+                break;
             }
+            case 2:
+                createStaff();
+                break;
+            default:
+                System.out.println("Invalid input!");
         }
-        if (isValidAccount) {
-            System.out.println("You have successfully logged in as Staff!\nWelcome  " + username);
-        } else {
-            System.out.println("Invalid user!");
+    }
+
+    private static void staffMenu() {
+        System.out.println("Welcome to Staff Administrative Menu");
+        System.out.println("(1) Unassign Seat from movie display");
+        System.out.println("(2) Administrate Movies");
+        System.out.println("Enter your choice :");
+        Scanner staffScan = new Scanner(System.in);
+        int choice = staffScan.nextInt();
+        switch (choice){
+            case 1:
+                //  Unassign Seat function..
+                SeatAssignmentModule seatAssignmentModule = new SeatAssignmentModule();
+                break;
+            case 2:
+                MoviesList.administrateMovie();
         }
-//        createStaff();
     }
 
     private static void createStaff() {
@@ -192,17 +226,17 @@ public class MainMenu {
                 case (1):
                     System.out.println("	----------- Book Movie -----------");
                     if (loggedIn) {
-                    	ArrayList<MovieDisplay> spefificMovieDisplay = extractDisplays(movie);
+                      ArrayList<MovieDisplay> spefificMovieDisplay = extractDisplays(movie);
                     	int cnt=1;
                     	for(MovieDisplay mD:spefificMovieDisplay) {
-                    		System.out.println(cnt + " " + mD.getMovieDisplayed().getMovieTitle() + " Cinema Code n°" + mD.getCinemaCode());
+                    		System.out.println(cnt + " " + mD.getMovieDisplayed().getMovieTitle() + " Cinema Code nÂ°" + mD.getCinemaCode());
                     		cnt++;
                     	}
                         System.out.println("  	Enter the number associated to the movie display you want to book");
                         int displayChoice = sc.nextInt();
                         MovieDisplay chosenDisplay = spefificMovieDisplay.get(displayChoice-1);
-                        //SeatAssignmentModule seatAssignmentModule = new SeatAssignmentModule();
-                        //seatAssignmentModule.init(movie, customerUser);
+                        SeatAssignmentModule seatAssignmentModule = new SeatAssignmentModule();
+                        seatAssignmentModule.init(movie, customerUser,chosenDisplay);
                         System.out.println("	----------- Your booking is successful! -----------");
                     } else {
                         System.out.println("	Login first to access this option");

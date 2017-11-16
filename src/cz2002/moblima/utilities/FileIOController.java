@@ -25,8 +25,7 @@ public class FileIOController {
 
     private static final String userFileName = "Users.txt";
     private static final String movieDisplayFileName = "movieDisplays.txt";
-    private static final String bookingHistFileName = "BookingHistory.txt";
-	private static final DateFormat df = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
+    private static final DateFormat df = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
 
     /**
      * Attempts to open a handle to the specified file and adds the data stream to the list
@@ -101,9 +100,15 @@ public class FileIOController {
         }
     }
 
+    /**
+     * Opens a handle to specified file with filename and starts
+     * in APPEND MODE, i.e. all data is written to the file while retaining existing data
+     * @param data
+     * @param filename
+     */
     public static void writeFile(String data, String filename) {
         try {
-            FileWriter fileWriter = new FileWriter(filename);
+            FileWriter fileWriter = new FileWriter(filename,true);
             BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
             bufferedWriter.write(data);
             bufferedWriter.close();
@@ -222,8 +227,8 @@ public class FileIOController {
         }
         return mDL;
     }
-	
-	public static void assignSeatsFromFile(ArrayList<MovieDisplay> totalMovieDisplay) {
+  
+  	public static void assignSeatsFromFile(ArrayList<MovieDisplay> totalMovieDisplay) {
 		
 		String line;
 		BufferedReader br = null;
@@ -259,4 +264,5 @@ public class FileIOController {
 			}
 		}
 	}
+
 }
