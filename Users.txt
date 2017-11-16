@@ -1,1 +1,15 @@
-1 aaron goy sypeskder
+1 Bob Bobby pW1
+2 Tic Tac pW2
+3 Eli Smith pW3
+4 Bibou Clop pW4
+5 Franck Kappa pW2
+6 Joan Pablo pW3
+7 Jo Let test pW2
+1 Bob Bobby pW1 16-11-1992
+2 Tic Tac pW2 16-11-1992
+3 Eli Smith pW3 16-11-1992
+4 Bibou Clop pW4 16-11-1992
+5 Franck Kappa pW2 16-11-1992
+6 Joan Pablo pW3 16-11-1992
+7 Jo Let test 16-11-1992
+8 Joan Le sypeskder 16-01-1994

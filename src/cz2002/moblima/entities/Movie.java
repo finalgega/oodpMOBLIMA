@@ -91,4 +91,5 @@ public class Movie {
     public String getMovieReviews() {
         return movieReviews;
     }
+
 }

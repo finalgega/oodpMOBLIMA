@@ -6,7 +6,6 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.Period;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.Scanner;
 
@@ -18,12 +17,30 @@ public class User {
         SENIOR_CITIZEN
     }
 
-	private int userID;
-	private String firstName;
+    public User(int userID, String firstName, String lastName, String password, String dateOfBirth) {
+        this.userID = userID;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.password = password;
+        this.dateOfBirth = dateOfBirth;
+    }
+
+    private int userID;
+    private String firstName;
 	private String lastName;
+
+    public User(int userID, String firstName, String lastName, String username, String password, String dateOfBirth) {
+        this.userID = userID;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.username = username;
+        this.password = password;
+        this.dateOfBirth = dateOfBirth;
+    }
+
     private String username;
     private String password;
-    private Date dateOfBirth;
+    private String dateOfBirth;
     private USER_AGE_CATEGORY categoryOfUser;
 
     public User(int id, String firstName, String lastName, String password) {
@@ -31,6 +48,8 @@ public class User {
         this.firstName = firstName;
         this.lastName = lastName;
         this.password = password;
+        this.username = "test";
+        this.dateOfBirth = "16-11-1992";
     }
 
     public User(String username, String password) {
@@ -52,12 +71,43 @@ public class User {
         return password;
     }
 
-    public Date getDateOfBirth() {
+    public String getDateOfBirth() {
         return dateOfBirth;
     }
 
     public USER_AGE_CATEGORY getCategoryOfUser() {
-        return categoryOfUser;
+        int age = computeAge();
+        if (age < 18) {
+            this.categoryOfUser = USER_AGE_CATEGORY.CHILD;
+        } else if (age > 65) {
+            this.categoryOfUser = USER_AGE_CATEGORY.SENIOR_CITIZEN;
+        } else {
+            this.categoryOfUser = USER_AGE_CATEGORY.ADULT;
+        }
+
+        return this.categoryOfUser;
+    }
+
+    /**
+     * Calculates the age of User by computing the difference between the given date of birth and current date
+     *
+     * @return Computed age
+     */
+    public int computeAge() {
+        try {
+            DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+            Calendar calendar = GregorianCalendar.getInstance();
+            calendar.setTime(dateFormat.parse(getDateOfBirth()));
+
+            LocalDate birthday = LocalDate.of(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
+            LocalDate now = LocalDate.now();
+
+            Period period = Period.between(birthday, now);
+            return period.getYears();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return 0;
     }
 
     private static void testCalculateAge() {
