@@ -1,11 +1,7 @@
 package cz2002.moblima.modules;
 
 import cz2002.moblima.controllers.MovieController;
-import cz2002.moblima.entities.Movie;
-import cz2002.moblima.entities.MovieDisplay;
-import cz2002.moblima.entities.Cineplexes;
-import cz2002.moblima.entities.Review;
-import cz2002.moblima.entities.User;
+import cz2002.moblima.entities.*;
 import cz2002.moblima.utilities.FileIOController;
 
 import java.io.IOException;
@@ -15,14 +11,13 @@ import java.util.Scanner;
 public class MainMenu {
 	
 	/*you can access the user Id through the method .getUserId(); however, the class contains no email.
-	The reviews are independent form the user logged in.*/
-	private static ArrayList<User> allUsers = new ArrayList<User>();
-	//Read the movies from file
-	private static ArrayList<Movie> movieArrayList = MovieController.getInstance().getListOfMovies();
-	//Read the movieDiplays from file
-    //The movieDisplays are containing a link to the movie they are associated to.
-	private static ArrayList<MovieDisplay> movieDisplayArrayList = FileIOController.readMovieDisplayFile(movieArrayList);
-	private static int size;
+    The reviews are independent form the user logged in.
+	We are not required to publish the review history, given a user, therefore it is not a problem*/
+    private static ArrayList<Movie> movieArrayList = MovieController.getInstance().getListOfMovies();
+    private static ArrayList<MovieDisplay> movieDisplayArrayList = FileIOController.readMovieDisplayFile(movieArrayList);
+    private static ArrayList<User> allUsers = new ArrayList<User>();
+    private static int size;
+
 	private static boolean loggedIn = false;
 	private static User customerUser;
 	private static int nbrCineplexes = 3; //total number of cineplexes
@@ -32,14 +27,12 @@ public class MainMenu {
     public static void init() {
         Scanner sc = new Scanner(System.in);
         System.out.println("----------- Welcome to SeatAssignmentModule -----------");
-        
+
         // Initialising cineplexes and cinemas
         Cineplexes[] Ciplxs = new Cineplexes[nbrCineplexes];
         for(int i = 0; i <nbrCineplexes; i++) {
         	Ciplxs[i] = new Cineplexes(nbrCinemas, i, nbrSeats);
         }
-        
-        
         //Read the users from file
         allUsers = FileIOController.readUserFile();
         size = allUsers.size();
@@ -65,59 +58,61 @@ public class MainMenu {
 
 
 			switch(mainMenuChoice){
-				case(1): 
-					System.out.println("	----------- View All Movies -----------");
-					int counter = 1;
-					//Display all movies
-					for (Movie movie : movieArrayList) {
-						System.out.println("Movie Title : (" + counter + ") " + movie.getMovieTitle());
-						counter++;
-					}
-					System.out.println();
-					System.out.println("	Enter number to view movie details and access movie operations: ");
-					//call function to display movie summary
-					int movieChoice = 0;
-					movieChoice = sc.nextInt();
-					System.out.println("Movie Title : " + movieArrayList.get(movieChoice - 1).getMovieTitle());
-					System.out.println("Movie Synopsis : " + movieArrayList.get(movieChoice - 1).getMovieSynopsis());
-					//call movie menu
-					System.out.println();
-					movieMenu(movieArrayList.get(movieChoice - 1));
-					break;
-				case(2):
-					System.out.println("	----------- View Booking History -----------");
-					//get email to display user's booking history
-					System.out.println("	Enter your email:");
+                case (1): {
+                    int counter = 1;
+                    //Display all movies
+                    for (Movie movie : movieArrayList
+                            ) {
+                        System.out.println("Movie Title : (" + counter + ") " + movie.getMovieTitle());
+                        counter++;
+                    }
+                    System.out.println();
+                    System.out.println("	Enter number to view movie details and access movie operations: ");
+                    //call function to display movie summary
+                    int movieChoice = 0;
+                    movieChoice = sc.nextInt();
+                    System.out.println("Movie Title : " + movieArrayList.get(movieChoice - 1).getMovieTitle());
+                    System.out.println("Movie Synopsis : " + movieArrayList.get(movieChoice - 1).getMovieSynopsis());
+                    //call movie menu
+                    System.out.println();
+                    movieMenu(movieArrayList.get(movieChoice - 1));
+                }
+                case (2): {
+                    System.out.println("	----------- View Booking History -----------");
+                    //get email to display user's booking history
+                    System.out.println("	Enter your email:");
 //					String email = sc.nextLine();
-					System.out.println("THIS FUNCTION DOES NOT WORK!");
-					System.out.println("	----------- Your Booking History -----------");
-					// Display all booking history
-					// If user has not made any prior booking, return "No booking has been made yet!"
-					break;
-				case(3):
-					System.out.println("	----------- View Top 5 Movies By Ticket Sales -----------");
-					// Display top 5 movies by ticket sales
-					break;
-					
-				case(4):
-					// Connect as customer
+                    System.out.println("THIS FUNCTION DOES NOT WORK!");
+                    System.out.println("	----------- Your Booking History -----------");
+                    // Display all booking history
+                    // If user has not made any prior booking, return "No booking has been made yet!"
+                    break;
+                }
+                case (3): {
+                    System.out.println("	----------- View Top 5 Movies By Ticket Sales -----------");
+                    // Display top 5 movies by ticket sales
+                    break;
+                }
+                case (4): {
+                    // Connect as customer
                     userLoginMenu();
                     break;
-
-                case(5):
-					// Connect as staff
+                }
+                case (5): {
+                    // Connect as staff
                     staffLogin();
                     break;
-				
-				case(6):
-					System.out.println("	----------- Program is terminating -----------");
-					break;
-					
-				default:
-					System.out.println("Invalid input");
-			}
-			System.out.println(" ");
-		}
+                }
+                case (6): {
+                    System.out.println("	----------- Program is terminating -----------");
+                    break;
+                }
+                default: {
+                    System.out.println("Invalid input");
+                }
+            }
+            System.out.println(" ");
+        }
 		
 		sc.close();	
 	}
@@ -164,98 +159,92 @@ public class MainMenu {
         System.out.println("Enter desired staff password : ");
         String password = sc.nextLine().trim();
         String datastream = username + " : " + password;
-        //FileIOController.writeFile(datastream, "Staff.txt");
+        FileIOController.writeFile(datastream, "Staff.txt");
         System.out.println("Staff account successfully created!");
     }
 
-    public static void movieMenu(Movie mv) {
+    private static void movieMenu(Movie movie) {
         //don't try to close the scanners... if more than one ".close()", it generates errors.
         Scanner sc = new Scanner(System.in);
-		
-		int movieMenuChoice = 0;
-		
-		while(movieMenuChoice != 5){
-			System.out.println("	(1) Book Movie");
-			System.out.println("	(2) View all reviews");
-			System.out.println("	(3) Submit a review");
-			if(!loggedIn) {
-				System.out.println("	(4) Login as customer");
-			}else {
-				System.out.println("	(4) Logout from customer account");
-			}
-			System.out.println("	(5) Back");
-			System.out.println("");
-			
-			System.out.print("  	Enter number of your choice: ");
-			movieMenuChoice = sc.nextInt();
-			
-			switch(movieMenuChoice){
-				case(1): 
-					System.out.println("	----------- Book Movie -----------");
-					if(loggedIn) {
-						showDisplays(mv);
-                        /*SeatAssignmentModule.init();*/
+
+        int movieMenuChoice = 0;
+
+        while (movieMenuChoice != 5) {
+            System.out.println("	(1) Book Movie");
+            System.out.println("	(2) View all reviews");
+            System.out.println("	(3) Submit a review");
+            if (!loggedIn) {
+                System.out.println("	(4) Login as customer");
+            } else {
+                System.out.println("	(4) Logout from customer account");
+            }
+            System.out.println("	(5) Back");
+            System.out.println("");
+
+            System.out.print("  	Enter number of your choice: ");
+            movieMenuChoice = sc.nextInt();
+
+            switch (movieMenuChoice) {
+                case (1):
+                    System.out.println("	----------- Book Movie -----------");
+                    if (loggedIn) {
+                        showDisplays(movie);
+                        SeatAssignmentModule seatAssignmentModule = new SeatAssignmentModule();
+//                        seatAssignmentModule.init(movie, customerUser);
                         System.out.println("	----------- Your booking is successful! -----------");
-					}else {
-						System.out.println("	Login first to access this option");
-					}
-					System.out.println();
-					break;
-				case(2):
-					System.out.println("	----------- View All Reviews -----------");
-					//call review function
-                    Review.listAllReviews(mv.getMovieTitle());
+                    } else {
+                        System.out.println("	Login first to access this option");
+                    }
+                    System.out.println();
+                    break;
+                case (2):
+                    System.out.println("	----------- View All Reviews -----------");
+                    //call review function
+                    Review.listAllReviews(movie.getMovieTitle());
                     System.out.println("	----------- End Of All Reviews -----------");
-					break;
-				case(3):
-					System.out.println();
-					System.out.println("	----------- Enter a new review -----------");
-					// call new review function
-					System.out.print("	Your email: ");
-					sc.nextLine();
-					String userEmail = sc.nextLine();
-					System.out.print("	Movie rating (1-5): ");
-					int rating = sc.nextInt();
-					while (rating > 5 || rating < 0){
-						System.out.println("	Please input a rating of 1-5.. ");
-						System.out.print("	Movie rating (1-5 [Best]): ");
-						rating = sc.nextInt();
-					}
-					System.out.print("	Movie rating description: ");
-					sc.nextLine();
-					String movieDesc = sc.nextLine();
+                    break;
+                case (3):
+                    System.out.println();
+                    System.out.println("	----------- Enter a new review -----------");
+                    // call new review function
+                    System.out.print("	Your email: ");
+                    sc.nextLine();
+                    String userEmail = sc.nextLine();
+                    System.out.print("	Movie rating (1-5): ");
+                    int rating = sc.nextInt();
+                    while (rating > 5 || rating < 0) {
+                        System.out.println("	Please input a rating of 1-5.. ");
+                        System.out.print("	Movie rating (1-5 [Best]): ");
+                        rating = sc.nextInt();
+                    }
+                    System.out.print("	Movie rating description: ");
+                    sc.nextLine();
+                    String movieDesc = sc.nextLine();
                     try {
-                        Review.writeReview(mv.getMovieTitle(), rating, movieDesc, userEmail);
+                        Review.writeReview(movie.getMovieTitle(), rating, movieDesc, userEmail);
+
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
                     System.out.println();
                     System.out.print("	----------- Your review submission is successful! -----------");
-					System.out.println();
-					break;
-					
-				case(4):
-					// Connect as customer
+                    System.out.println();
+                    break;
+
+                case (4):
+                    // Connect as customer
                     userLoginMenu();
                     break;
                 case (5):
                     System.out.println();
-					break;
-				default:
-					System.out.println("Invalid input");
-			}
-			System.out.println(" ");
-		}
-	}
-    
-    public static void showDisplays(Movie mv) {
-    	for(MovieDisplay mD : movieDisplayArrayList) {
-    		if(mv.getMovieTitle().compareTo(mD.getMovieDisplayed().getMovieTitle())==0) {
-    			System.out.println(mD.getDisplayId()+" "+mD.getMovieDisplayed().getMovieTitle()+" Cinema Code n�"+mD.getCinemaCode());
-    		}
-		} 
+                    break;
+                default:
+                    System.out.println("Invalid input");
+            }
+            System.out.println(" ");
+        }
     }
-
+  
     //function for the user login
     public static void userLoginMenu() {
         Scanner sc = new Scanner(System.in);
@@ -310,6 +299,14 @@ public class MainMenu {
                     System.out.println("Invalid input");
             }
 
+        }
+    }
+
+    public static void showDisplays(Movie mv) {
+        for (MovieDisplay mD : movieDisplayArrayList) {
+            if (mv.getMovieTitle().compareTo(mD.getMovieDisplayed().getMovieTitle()) == 0) {
+                System.out.println(mD.getDisplayId() + " " + mD.getMovieDisplayed().getMovieTitle() + " Cinema Code nÂ°" + mD.getCinemaCode());
+            }
         }
     }
 }
