@@ -90,17 +90,13 @@ public class MainMenu {
 					
 				case(4):
 					// Connect as customer
-                    try {
-                        LogInOutMenu();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
+                    userLoginMenu();
                     break;
 
                 case(5):
 					// Connect as staff
-
-					break;
+                    staffLogin();
+                    break;
 				
 				case(6):
 					System.out.println("	----------- Program is terminating -----------");
@@ -114,6 +110,52 @@ public class MainMenu {
 		
 		sc.close();	
 	}
+
+    private static void staffLogin() {
+        ArrayList<String> list = new ArrayList();
+        FileIOController.readFile(list, "Staff.txt");
+        ArrayList<User> staffAccounts = new ArrayList<>();
+        for (String str : list
+                ) {
+            Scanner stringSpliiter = new Scanner(str).useDelimiter(":");
+            User staff = new User(stringSpliiter.next().trim(), stringSpliiter.next().trim());
+            staffAccounts.add(staff);
+            if (list.isEmpty()) {
+                stringSpliiter.close();
+            }
+
+        }
+        Scanner sc = new Scanner(System.in);
+        System.out.println("Enter Username : ");
+        String username = sc.nextLine();
+        System.out.println("Enter Password : ");
+        String password = sc.nextLine();
+        User user = new User(username, password);
+        boolean isValidAccount = false;
+        for (User usr : staffAccounts
+                ) {
+            if (user.getUsername().contentEquals(usr.getUsername()) && user.getPassword().contentEquals(usr.getPassword())) {
+                isValidAccount = true;
+            }
+        }
+        if (isValidAccount) {
+            System.out.println("You have successfully logged in as Staff!\nWelcome  " + username);
+        } else {
+            System.out.println("Invalid user!");
+        }
+//        createStaff();
+    }
+
+    private static void createStaff() {
+        Scanner sc = new Scanner(System.in);
+        System.out.println("Enter desired staff account name : ");
+        String username = sc.nextLine().trim();
+        System.out.println("Enter desired staff password : ");
+        String password = sc.nextLine().trim();
+        String datastream = username + " : " + password;
+        FileIOController.writeFile(datastream, "Staff.txt");
+        System.out.println("Staff account successfully created!");
+    }
 
     public static void movieMenu(String movieTitle) {
         //don't try to close the scanners... if more than one ".close()", it generates errors.
@@ -182,11 +224,7 @@ public class MainMenu {
 					
 				case(4):
 					// Connect as customer
-                    try {
-                        LogInOutMenu();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
+                    userLoginMenu();
                     break;
                 case (5):
                     System.out.println();
@@ -197,8 +235,66 @@ public class MainMenu {
 			System.out.println(" ");
 		}
 	}
-	
-	//function for the user login
+
+    //function for the user login
+    public static void userLoginMenu() {
+        Scanner sc = new Scanner(System.in);
+        if (loggedIn) {
+            loggedIn = false;
+            System.out.println("	----------- Your were successfully logged out! -----------");
+        } else {
+            System.out.println("	(1) Already registered");
+            System.out.println("	(2) Create a new account");
+            System.out.println("	(3) Back");
+            int choice = 0;
+            int iD;
+            String firstName, lastName, username, password;
+            choice = sc.nextInt();
+            switch (choice) {
+                case (1):
+                    System.out.println("	Enter your customer iD");
+                    iD = sc.nextInt();
+                    System.out.println("	Enter your password");
+                    password = sc.next();
+                    if (iD > size) {
+                        System.out.println("Wrong iD");
+                    } else {
+                        if (allUsers.get(iD - 1).getPassword().compareTo(password) != 0) {
+                            System.out.println("Wrong iD or password");
+                            System.out.println(allUsers.get(iD - 1).getPassword());
+                        } else {
+                            customerUser = allUsers.get(iD - 1);
+                            loggedIn = true;
+                            System.out.println("	----------- Your were succesfully logged in -----------");
+                        }
+                    }
+                    break;
+                case (2):
+                    System.out.println("	Enter your first name");
+                    firstName = sc.next();
+                    System.out.println("	Enter your last name");
+                    lastName = sc.next();
+                    System.out.println("	Enter a password");
+                    password = sc.next();
+                    customerUser = new User(allUsers.size() + 1, firstName, lastName, password);
+                    loggedIn = true;
+                    allUsers.add(customerUser);
+                    FileIOController.addUsers(allUsers);
+                    size++;
+                    System.out.println("	----------- Your have succesfully created an account -----------");
+                    System.out.println("	----------- Your customer iD is : " + customerUser.getUserID() + " -----------");
+                    break;
+                case (3):
+                    break;
+                default:
+                    System.out.println("Invalid input");
+            }
+
+        }
+    }
+
+/*
+//function for the user login
 	public static void LogInOutMenu() throws IOException {
 		Scanner sc = new Scanner(System.in);
 		if(loggedIn) {
@@ -208,20 +304,20 @@ public class MainMenu {
 			System.out.println("	(1) Already registered");
 			System.out.println("	(2) Create a new account");
 			System.out.println("	(3) Back");
-			int Choice = 0;
-			String fN, lN, pW;
-			int iD;
-				Choice = sc.nextInt();
-			switch(Choice){
+			int choice = 0;
+            int iD;
+			String firstName, lastName, password;
+            choice = sc.nextInt();
+			switch(choice){
 			case(1):
 				System.out.println("	Enter your customer iD");
 				iD = sc.nextInt();
 				System.out.println("	Enter your password");
-				pW = sc.next();
+				password = sc.next();
 				if(iD>size) {
 					System.out.println("Wrong iD");
 				}else {
-                    if (allUsers.get(iD - 1).getPassword().compareTo(pW) != 0) {
+                    if (allUsers.get(iD - 1).getPassword().compareTo(password) != 0) {
                         System.out.println("Wrong iD or password");
                         System.out.println(allUsers.get(iD - 1).getPassword());
                     } else {
@@ -233,12 +329,12 @@ public class MainMenu {
 				break;
 			case(2):
 				System.out.println("	Enter your first name");
-				fN = sc.next();
+				firstName = sc.next();
 				System.out.println("	Enter your last name");
 				lN = sc.next();
 				System.out.println("	Enter a password");
-				pW = sc.next();
-				customerUser = new User(allUsers.size()+1, fN, lN, pW);
+				password = sc.next();
+				customerUser = new User(allUsers.size()+1, firstName, lN, password);
 				loggedIn = true;
 				allUsers.add(customerUser);
 				FileIOController.addUsers(allUsers);
@@ -251,8 +347,9 @@ public class MainMenu {
 			default:
 				System.out.println("Invalid input");
 			}
-			
+
 		}
 	}
-	
+	*/
+
 }
