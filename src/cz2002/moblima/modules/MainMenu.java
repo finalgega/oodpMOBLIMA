@@ -12,12 +12,12 @@ public class MainMenu {
 	
 	/*you can access the user Id through the method .getUserId(); however, the class contains no email.
     The reviews are independent form the user logged in.
-
 	We are not required to publish the review history, given a user, therefore it is not a problem*/
     private static ArrayList<Movie> movieArrayList = MovieController.getInstance().getListOfMovies();
     private static ArrayList<MovieDisplay> movieDisplayArrayList = FileIOController.readMovieDisplayFile(movieArrayList);
     private static ArrayList<User> allUsers = new ArrayList<User>();
     private static int size;
+
 	private static boolean loggedIn = false;
 	private static User customerUser;
 	private static int nbrCineplexes = 3; //total number of cineplexes
@@ -33,14 +33,10 @@ public class MainMenu {
         for(int i = 0; i <nbrCineplexes; i++) {
         	Ciplxs[i] = new Cineplexes(nbrCinemas, i, nbrSeats);
         }
-
-        //Read the movies from file
-        ArrayList<Movie> movieArrayList = MovieController.getInstance().getListOfMovies();
-
         //Read the users from file
         allUsers = FileIOController.readUserFile();
         size = allUsers.size();
-
+        
         int mainMenuChoice = 0;
 		
 		while(mainMenuChoice != 6){
@@ -226,6 +222,7 @@ public class MainMenu {
                     String movieDesc = sc.nextLine();
                     try {
                         Review.writeReview(movie.getMovieTitle(), rating, movieDesc, userEmail);
+
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
@@ -247,6 +244,7 @@ public class MainMenu {
             System.out.println(" ");
         }
     }
+  
     //function for the user login
     public static void userLoginMenu() {
         Scanner sc = new Scanner(System.in);
@@ -307,7 +305,7 @@ public class MainMenu {
     public static void showDisplays(Movie mv) {
         for (MovieDisplay mD : movieDisplayArrayList) {
             if (mv.getMovieTitle().compareTo(mD.getMovieDisplayed().getMovieTitle()) == 0) {
-                System.out.println(mD.getDisplayId() + " " + mD.getMovieDisplayed().getMovieTitle() + " Cinema Code n°" + mD.getCinemaCode());
+                System.out.println(mD.getDisplayId() + " " + mD.getMovieDisplayed().getMovieTitle() + " Cinema Code nÂ°" + mD.getCinemaCode());
             }
         }
     }
