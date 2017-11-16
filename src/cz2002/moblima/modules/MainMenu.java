@@ -1,10 +1,7 @@
 package cz2002.moblima.modules;
 
 import cz2002.moblima.controllers.MovieController;
-import cz2002.moblima.entities.Cineplexes;
-import cz2002.moblima.entities.Movie;
-import cz2002.moblima.entities.Review;
-import cz2002.moblima.entities.User;
+import cz2002.moblima.entities.*;
 import cz2002.moblima.utilities.FileIOController;
 
 import java.io.IOException;
@@ -14,10 +11,13 @@ import java.util.Scanner;
 public class MainMenu {
 	
 	/*you can access the user Id through the method .getUserId(); however, the class contains no email.
-	The reviews are independent form the user logged in.
+    The reviews are independent form the user logged in.
+
 	We are not required to publish the review history, given a user, therefore it is not a problem*/
-	private static ArrayList<User> allUsers = new ArrayList<User>();
-	private static int size;
+    private static ArrayList<Movie> movieArrayList = MovieController.getInstance().getListOfMovies();
+    private static ArrayList<MovieDisplay> movieDisplayArrayList = FileIOController.readMovieDisplayFile(movieArrayList);
+    private static ArrayList<User> allUsers = new ArrayList<User>();
+    private static int size;
 	private static boolean loggedIn = false;
 	private static User customerUser;
 	private static int nbrCineplexes = 3; //total number of cineplexes
@@ -71,7 +71,7 @@ public class MainMenu {
                         counter++;
                     }
                     System.out.println();
-                    System.out.println("	Enter number to view movie details: ");
+                    System.out.println("	Enter number to view movie details and access movie operations: ");
                     //call function to display movie summary
                     int movieChoice = 0;
                     movieChoice = sc.nextInt();
@@ -79,13 +79,7 @@ public class MainMenu {
                     System.out.println("Movie Synopsis : " + movieArrayList.get(movieChoice - 1).getMovieSynopsis());
                     //call movie menu
                     System.out.println();
-                    //Change "Thor" to a movie name variable
-                    System.out.println("Do you wish to book this movie? (y/n)");
-                    char choice = sc.next().charAt(0);
-                    if (choice == 'y' || choice == 'Y') {
-                        movieMenu(movieArrayList.get(movieChoice - 1));
-                        break;
-                    }
+                    movieMenu(movieArrayList.get(movieChoice - 1));
                 }
                 case (2): {
                     System.out.println("	----------- View Booking History -----------");
@@ -198,6 +192,7 @@ public class MainMenu {
                 case (1):
                     System.out.println("	----------- Book Movie -----------");
                     if (loggedIn) {
+                        showDisplays(movie);
                         SeatAssignmentModule seatAssignmentModule = new SeatAssignmentModule();
 //                        seatAssignmentModule.init(movie, customerUser);
                         System.out.println("	----------- Your booking is successful! -----------");
@@ -306,6 +301,14 @@ public class MainMenu {
                     System.out.println("Invalid input");
             }
 
+        }
+    }
+
+    public static void showDisplays(Movie mv) {
+        for (MovieDisplay mD : movieDisplayArrayList) {
+            if (mv.getMovieTitle().compareTo(mD.getMovieDisplayed().getMovieTitle()) == 0) {
+                System.out.println(mD.getDisplayId() + " " + mD.getMovieDisplayed().getMovieTitle() + " Cinema Code n°" + mD.getCinemaCode());
+            }
         }
     }
 }
