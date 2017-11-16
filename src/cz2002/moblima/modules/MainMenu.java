@@ -288,7 +288,7 @@ public class MainMenu {
                     customerUser = new User(allUsers.size() + 1, firstName, lastName, password);
                     loggedIn = true;
                     allUsers.add(customerUser);
-                    FileIOController.addUsers(allUsers);
+                    FileIOController.addUsers(customerUser);
                     size++;
                     System.out.println("	----------- Your have succesfully created an account -----------");
                     System.out.println("	----------- Your customer iD is : " + customerUser.getUserID() + " -----------");
