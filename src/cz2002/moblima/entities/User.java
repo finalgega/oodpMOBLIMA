@@ -2,9 +2,9 @@ package cz2002.moblima.entities;
 
 public class User {
 
-	private int userID;
-	private String firstName;
-	private String lastName;
+    private int userID;
+    private String firstName;
+    private String lastName;
     private String password;
 
     public User(int id, String fN, String lN, String password) {
