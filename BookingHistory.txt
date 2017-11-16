@@ -1,0 +1,7 @@
+User ID:1/Transaction ID:[TransactionID]/Movie Title:Geostorm/Display ID:2/Seat ID:3<b/Total Price:[totalTicketPrice]/Total Tickets:[totalTickets]
+User ID:2/Transaction ID:[TransactionID]/Movie Title:Geostorm/Display ID:3/Seat ID:5<d/Total Price:[totalTicketPrice]/Total Tickets:[totalTickets]
+User ID:3/Transaction ID:[TransactionID]/Movie Title:Geostorm/Display ID:2/Seat ID:4<b/Total Price:[totalTicketPrice]/Total Tickets:[totalTickets]
+User ID:3/Transaction ID:[TransactionID]/Movie Title:Thor: Ragnarok/Display ID:5/Seat ID:7<e/Total Price:[totalTicketPrice]/Total Tickets:[totalTickets]
+User ID:2/Transaction ID:[TransactionID]/Movie Title:Thor: Ragnarok/Display ID:7/Seat ID:3<c/Total Price:[totalTicketPrice]/Total Tickets:[totalTickets]
+User ID:1/Transaction ID:[TransactionID]/Movie Title:Thor: Ragnarok/Display ID:8/Seat ID:5<a/Total Price:[totalTicketPrice]/Total Tickets:[totalTickets]
+User ID:5/Transaction ID:[TransactionID]/Movie Title:Geostorm/Display ID:2/Seat ID:5<e/Total Price:[totalTicketPrice]/Total Tickets:[totalTickets]
