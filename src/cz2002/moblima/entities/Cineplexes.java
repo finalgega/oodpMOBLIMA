@@ -17,6 +17,7 @@ public class Cineplexes {
 
     public Cineplexes(int numOfCinemas, int cinplxId, int numOfSeatsInCinema) {
     	cineplexId = cinplxId;
+    	cinemaArrayList = new ArrayList<Cinema>();
         for (int i = 0; i < numOfCinemas; i++) {
             this.cinemaArrayList.add(new Cinema(numOfSeatsInCinema, cineplexId*10+i, cineplexId));
         }
