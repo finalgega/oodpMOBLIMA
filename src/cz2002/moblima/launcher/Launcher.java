@@ -30,11 +30,12 @@ public class Launcher {
     private static void printWelcomeMessage() {
         System.out.println("SeatAssignmentModule Application");
         System.out.println("Group : CZ2002-SS1-GROUP-01");
-        System.out.println("Authors : ");
+        System.out.print("Authors :");
         for (String name : names
                 ) {
-            System.out.println(name);
+            System.out.print(name+", ");
         }
+        System.out.println();
         System.out.println("Version : " + APP_VERSION);
     }
 
