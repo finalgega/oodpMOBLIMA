@@ -27,7 +27,11 @@ public class MainMenu {
     public static void init() {
         Scanner sc = new Scanner(System.in);
         System.out.println("----------- Welcome to SeatAssignmentModule -----------");
-
+        
+        //LITTLE MODIFICATION
+        // Assignement of the seats
+        FileIOController.assignSeatsFromFile(movieDisplayArrayList);
+        
         // Initialising cineplexes and cinemas
         Cineplexes[] Ciplxs = new Cineplexes[nbrCineplexes];
         for(int i = 0; i <nbrCineplexes; i++) {
