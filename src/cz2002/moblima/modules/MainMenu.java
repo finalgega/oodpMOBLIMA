@@ -2,6 +2,7 @@ package cz2002.moblima.modules;
 
 import cz2002.moblima.controllers.MovieController;
 import cz2002.moblima.entities.Movie;
+import cz2002.moblima.entities.Cineplexes;
 import cz2002.moblima.entities.Review;
 import cz2002.moblima.entities.User;
 import cz2002.moblima.utilities.FileIOController;
@@ -19,10 +20,24 @@ public class MainMenu {
 	private static int size;
 	private static boolean loggedIn = false;
 	private static User customerUser;
+	private static int nbrCineplexes = 3; //total number of cineplexes
+	private static int nbrCinemas = 3; //number of cinemas per cineplexes
+	private static int nbrSeats = 80; //number of seats per cinemas
 
     public static void init() {
         Scanner sc = new Scanner(System.in);
         System.out.println("----------- Welcome to SeatAssignmentModule -----------");
+        
+        // Initialising cineplexes and cinemas
+        Cineplexes[] Ciplxs = new Cineplexes[nbrCineplexes];
+        for(int i = 0; i <nbrCineplexes; i++) {
+        	Ciplxs[i] = new Cineplexes(nbrCinemas, i, nbrSeats);
+        }
+        
+        //Read the movies from file
+        ArrayList<Movie> movieArrayList = MovieController.getInstance().getListOfMovies();
+        
+        //Read the users from file
         allUsers = FileIOController.readUserFile();
         size = allUsers.size();
 
@@ -51,9 +66,7 @@ public class MainMenu {
 					System.out.println("	----------- View All Movies -----------");
 					int counter = 1;
 					//Display all movies
-					ArrayList<Movie> movieArrayList = MovieController.getInstance().getListOfMovies();
-					for (Movie movie : movieArrayList
-							) {
+					for (Movie movie : movieArrayList) {
 						System.out.println("Movie Title : (" + counter + ") " + movie.getMovieTitle());
 						counter++;
 					}
@@ -67,11 +80,7 @@ public class MainMenu {
 					//call movie menu
 					System.out.println();
 					//Change "Thor" to a movie name variable
-					System.out.println("Do you wish to book this movie? (y/n)");
-					char choice = sc.next().charAt(0);
-					if (choice == 'y' || choice == 'Y') {
-                        movieMenu(movieArrayList.get(movieChoice - 1));
-                    }
+					movieMenu(movieArrayList.get(movieChoice - 1).getMovieTitle());
 					break;
 				case(2):
 					System.out.println("	----------- View Booking History -----------");
@@ -111,91 +120,10 @@ public class MainMenu {
 		sc.close();	
 	}
 
-    private static void movieMenu(Movie movie) {
-        //don't try to close the scanners... if more than one ".close()", it generates errors.
-        Scanner sc = new Scanner(System.in);
-
-        int movieMenuChoice = 0;
-
-        while (movieMenuChoice != 5) {
-            System.out.println("	(1) Book Movie");
-            System.out.println("	(2) View all reviews");
-            System.out.println("	(3) Submit a review");
-            if (!loggedIn) {
-                System.out.println("	(4) Login as customer");
-            } else {
-                System.out.println("	(4) Logout from customer account");
-            }
-            System.out.println("	(5) Back");
-            System.out.println("");
-
-            System.out.print("  	Enter number of your choice: ");
-            movieMenuChoice = sc.nextInt();
-
-            switch (movieMenuChoice) {
-                case (1):
-                    System.out.println("	----------- Book Movie -----------");
-                    if (loggedIn) {
-
-                        SeatAssignmentModule.init(movie, customerUser);
-                        System.out.println("	----------- Your booking is successful! -----------");
-                    } else {
-                        System.out.println("	Login first to access this option");
-                    }
-                    System.out.println();
-                    break;
-                case (2):
-                    System.out.println("	----------- View All Reviews -----------");
-                    //call review function
-                    Review.listAllReviews(movie.getMovieTitle());
-                    System.out.println("	----------- End Of All Reviews -----------");
-                    break;
-                case (3):
-                    System.out.println();
-                    System.out.println("	----------- Enter a new review -----------");
-                    // call new review function
-                    System.out.print("	Your email: ");
-                    sc.nextLine();
-                    String userEmail = sc.nextLine();
-                    System.out.print("	Movie rating (1-5): ");
-                    int rating = sc.nextInt();
-                    while (rating > 5 || rating < 0) {
-                        System.out.println("	Please input a rating of 1-5.. ");
-                        System.out.print("	Movie rating (1-5 [Best]): ");
-                        rating = sc.nextInt();
-                    }
-                    System.out.print("	Movie rating description: ");
-                    sc.nextLine();
-                    String movieDesc = sc.nextLine();
-                    try {
-                        Review.writeReview(movie.getMovieTitle(), rating, movieDesc, userEmail);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                    System.out.println();
-                    System.out.print("	----------- Your review submission is successful! -----------");
-                    System.out.println();
-                    break;
-
-                case (4):
-                    // Connect as customer
-                    userLoginMenu();
-                    break;
-                case (5):
-                    System.out.println();
-                    break;
-                default:
-                    System.out.println("Invalid input");
-            }
-            System.out.println(" ");
-        }
-    }
-
     private static void staffLogin() {
         ArrayList<String> list = new ArrayList();
-        FileIOController.readFile(list, "Staff.txt");
+        //FileIOController.readFile(list, "Staff.txt");
         ArrayList<User> staffAccounts = new ArrayList<>();
-        Scanner sc = new Scanner(System.in);
         for (String str : list
                 ) {
             Scanner stringSpliiter = new Scanner(str).useDelimiter(":");
@@ -206,41 +134,25 @@ public class MainMenu {
             }
 
         }
-        int choice = 0;
-        System.out.println("(1) Login as staff");
-        System.out.println("(2) Create new staff account *For demonstration purposes*");
-        choice = sc.nextInt();
-
-        switch (choice) {
-            case 1: {
-                //  To clear the new line character in the buffer
-                sc.nextLine();
-                System.out.println("Enter Username : ");
-                String username = sc.nextLine();
-                System.out.println("Enter Password : ");
-                String password = sc.nextLine();
-                User user = new User(username, password);
-                boolean isValidAccount = false;
-                for (User usr : staffAccounts
-                        ) {
-                    if (user.getUsername().contentEquals(usr.getUsername()) && user.getPassword().contentEquals(usr.getPassword())) {
-                        isValidAccount = true;
-                    }
-                }
-                if (isValidAccount) {
-                    System.out.println("You have successfully logged in as Staff!\nWelcome  " + username);
-                    MoviesList.administrateMovie();
-                } else {
-                    System.out.println("Invalid user!");
-                }
-                break;
+        Scanner sc = new Scanner(System.in);
+        System.out.println("Enter Username : ");
+        String username = sc.nextLine();
+        System.out.println("Enter Password : ");
+        String password = sc.nextLine();
+        User user = new User(username, password);
+        boolean isValidAccount = false;
+        for (User usr : staffAccounts
+                ) {
+            if (user.getUsername().contentEquals(usr.getUsername()) && user.getPassword().contentEquals(usr.getPassword())) {
+                isValidAccount = true;
             }
-            case 2:
-                createStaff();
-                break;
-            default:
-                System.out.println("Invalid input!");
         }
+        if (isValidAccount) {
+            System.out.println("You have successfully logged in as Staff!\nWelcome  " + username);
+        } else {
+            System.out.println("Invalid user!");
+        }
+//        createStaff();
     }
 
     private static void createStaff() {
@@ -250,12 +162,11 @@ public class MainMenu {
         System.out.println("Enter desired staff password : ");
         String password = sc.nextLine().trim();
         String datastream = username + " : " + password;
-        FileIOController.writeFile(datastream, "Staff.txt");
+        //FileIOController.writeFile(datastream, "Staff.txt");
         System.out.println("Staff account successfully created!");
     }
 
- /*
-   public static void movieMenu(String movieTitle) {
+    public static void movieMenu(String movieTitle) {
         //don't try to close the scanners... if more than one ".close()", it generates errors.
         Scanner sc = new Scanner(System.in);
 		
@@ -280,7 +191,6 @@ public class MainMenu {
 				case(1): 
 					System.out.println("	----------- Book Movie -----------");
 					if(loggedIn) {
-
                         SeatAssignmentModule.init();
                         System.out.println("	----------- Your booking is successful! -----------");
 					}else {
@@ -334,7 +244,6 @@ public class MainMenu {
 			System.out.println(" ");
 		}
 	}
-	*/
 
     //function for the user login
     public static void userLoginMenu() {
@@ -348,7 +257,7 @@ public class MainMenu {
             System.out.println("	(3) Back");
             int choice = 0;
             int iD;
-            String firstName, lastName, username, password, dateOfBirth;
+            String firstName, lastName, username, password;
             choice = sc.nextInt();
             switch (choice) {
                 case (1):
@@ -374,13 +283,9 @@ public class MainMenu {
                     firstName = sc.next();
                     System.out.println("	Enter your last name");
                     lastName = sc.next();
-                    System.out.println("    Enter your username");
-                    username = sc.next();
                     System.out.println("	Enter a password");
                     password = sc.next();
-                    System.out.println("    Enter your date of birth in this format : DD-MM-YYYY");
-                    dateOfBirth = sc.next();
-                    customerUser = new User(allUsers.size() + 1, firstName, lastName, username, password, dateOfBirth);
+                    customerUser = new User(allUsers.size() + 1, firstName, lastName, password);
                     loggedIn = true;
                     allUsers.add(customerUser);
                     FileIOController.addUsers(allUsers);
@@ -451,7 +356,6 @@ public class MainMenu {
 			default:
 				System.out.println("Invalid input");
 			}
-
 		}
 	}
 	*/
