@@ -25,7 +25,7 @@ public class FileIOController {
 
     private static final String userFileName = "Users.txt";
     private static final String movieDisplayFileName = "movieDisplays.txt";
-	private static final DateFormat df = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
+    private static final DateFormat df = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
 
     /**
      * Attempts to open a handle to the specified file and adds the data stream to the list
@@ -206,11 +206,13 @@ public class FileIOController {
                 Movie m;
                 j = 0;
                 do {
-                	m = MovieList.get(j);
-                	j++;
-                }while(m.getMovieTitle()!=splitLine[2].replace("_", " ") && j<MovieList.size());
-                mD = new MovieDisplay(Integer.valueOf(splitLine[0]), Integer.valueOf(splitLine[1]), m, splitLine[2], df.parse(splitLine[4]+" "+splitLine[5]));
-                mDL.add(mD);
+                    m = MovieList.get(j);
+                    j++;
+                } while (m.getMovieTitle().compareTo(splitLine[3].replace("_", " ")) != 0 && j < MovieList.size());
+                if (m.getMovieTitle().compareTo(splitLine[3].replace("_", " ")) == 0) {
+                    mD = new MovieDisplay(Integer.valueOf(splitLine[0]), Integer.valueOf(splitLine[1]), m, splitLine[2], df.parse(splitLine[4] + " " + splitLine[5]));
+                    mDL.add(mD);
+                }
             }
         } catch (IOException e) {
             System.err.println(e);
