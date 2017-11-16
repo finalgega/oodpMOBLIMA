@@ -38,7 +38,7 @@ public class TicketPrice {
     }
 
 
-    public static void initiateChargeForTicket() {
+    public void initiateChargeForTicket() {
         TicketPrice t=new TicketPrice();
         Boolean flag=true;
         Scanner sc=new Scanner(System.in);
@@ -52,22 +52,22 @@ public class TicketPrice {
             int choice=sc.nextInt();
             switch(choice) {
                 case 1:{
-                    ticketprice=t.chargeWithType();
+                    ticketprice = chargeWithType();
                     System.out.println(ticketprice);
                     break;
                 }
                 case 2:{
-                    ticketprice=t.chargeWithClass();
+                    ticketprice = chargeWithClass();
                     System.out.println(ticketprice);
                     break;
                 }
                 case 3:{
-                    ticketprice=t.chargeWithAge();
+                    ticketprice = chargeWithAge();
                     System.out.println(ticketprice);
                     break;
                 }
                 case 4:{
-                    ticketprice=t.chargeWithDay();
+                    ticketprice = chargeWithDay();
                     System.out.println(ticketprice);
                     break;
                 }
@@ -77,6 +77,7 @@ public class TicketPrice {
                 }
             }
         }
+        System.exit(0);
     }
 
     public double chargeWithType(){
@@ -104,14 +105,14 @@ public class TicketPrice {
         String line;
         String line1;
         Scanner sc=new Scanner(System.in);
-        System.out.println("Enter the movie of your choice: ");
-        String moviename=sc.next();
+//        System.out.println("Enter the movie of your choice: ");
+//        String moviename=sc.next();
         try {
 
             fr=new FileReader(FILENAME);
             br=new BufferedReader(fr);
             while((line=br.readLine())!=null) {
-                if (line.contains("Movie") && line.contains(moviename)) {
+                if (line.contains("Movie") && line.contains(movie.getMovieTitle())) {
                     line1=br.readLine();
                     if (line1.contains("Movie Type")) {
                         if (line1.contains("3D")) {
@@ -122,6 +123,8 @@ public class TicketPrice {
                             price=8.0;
                             //System.out.println("Price="+price);
                             //System.out.println(line1);
+                        } else {
+                            price = 7.0;
                         }
                     }
 
@@ -175,20 +178,30 @@ public class TicketPrice {
     }
 
     public double chargeWithAge() {
-        TicketPrice t=new TicketPrice();
-        double price=t.chargeWithType();
-        String ch;
-        Scanner sc=new Scanner(System.in);
-        System.out.println("Please enter the age: ");
-        ch=sc.next();
-        if (ch.contains("Student")) {
-            price=0.9*price;
-            //System.out.println("Price: "+price);
-        } else if (ch.contains("Adult")) {
-            //System.out.println("Price: "+price);
-        } else if(ch.contains("SeniorCitizen")) {
-            price=0.85*price;
-            //System.out.println("Price: "+price);
+//        TicketPrice t=new TicketPrice();
+//        double price=t.chargeWithType();
+//        String ch;
+//        Scanner sc=new Scanner(System.in);
+//        System.out.println("Please enter the age: ");
+//        ch=sc.next();
+//        if (ch.contains("Student")) {
+//            price=0.9*price;
+//            //System.out.println("Price: "+price);
+//        } else if (ch.contains("Adult")) {
+//            //System.out.println("Price: "+price);
+//        } else if(ch.contains("SeniorCitizen")) {
+//            price=0.85*price;
+//            //System.out.println("Price: "+price);
+//        }
+//        return price;
+
+        double price = chargeWithType();
+        if (user.getCategoryOfUser() == User.USER_AGE_CATEGORY.CHILD) {
+            price = 0.9 * price;
+        } else if (user.getCategoryOfUser() == User.USER_AGE_CATEGORY.ADULT) {
+            return price;
+        } else if (user.getCategoryOfUser() == User.USER_AGE_CATEGORY.SENIOR_CITIZEN) {
+            price = 0.85 * price;
         }
         return price;
 

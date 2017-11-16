@@ -1,13 +1,15 @@
 package cz2002.moblima.modules;
 
 import cz2002.moblima.entities.Cinema;
+import cz2002.moblima.entities.Movie;
 import cz2002.moblima.entities.MovieDisplay;
+import cz2002.moblima.entities.User;
 
 import java.util.Scanner;
 
 public class SeatAssignmentModule {
 
-    public static void init() {
+	public static void init(Movie movie, User user) {
 
 		Scanner sc = new Scanner(System.in);
 		// At the moment 21 * 10 seats is the maximum
@@ -39,7 +41,8 @@ public class SeatAssignmentModule {
 					System.out.print("  Please enter Customer ID: ");
 					int custId = sc.nextInt();
 					m.assignSeat(row, col, custId);
-					executePayment();
+					TicketPrice ticket = new TicketPrice(movie, user);
+					ticket.initiateChargeForTicket();
 					break;
 				case(3):
 					System.out.print("  Enter SeatID to unassign customer from: ");
@@ -57,10 +60,5 @@ public class SeatAssignmentModule {
 
 		sc.close();
 
-	}
-
-	public static boolean executePayment() {
-		TicketPrice.initiateChargeForTicket();
-		return true;
 	}
 }

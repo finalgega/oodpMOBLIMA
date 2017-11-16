@@ -2,7 +2,7 @@ Movie: Geostorm
 Movie Type: - 
 Movie Director:Dean Devlin
 Cast: Gerard Butler, Abbie Cornish, Andy Garcia, Ed Harris, Jim Sturgess
-Synopsis: After an unprecedented series of natural disasters threatened the planet, the world’s leaders came together to create an intricate network of satellites to control the global climate and keep everyone safe. But now, something has gone wrong—the system built to protect the Earth is attacking it, and it’s a race against the clock to uncover the real threat before a worldwide geostorm wipes out everything...and everyone along with it.
+Synopsis: After an unprecedented series of natural disasters threatened the planet, the worldï¿½s leaders came together to create an intricate network of satellites to control the global climate and keep everyone safe. But now, something has gone wrongï¿½the system built to protect the Earth is attacking it, and itï¿½s a race against the clock to uncover the real threat before a worldwide geostorm wipes out everything...and everyone along with it.
 Movie Status: now showing
 Showtimes: whatever
 class: 3d
@@ -11,7 +11,6 @@ overall rating:4.5
 show start: today
 end of showing: tmr
 total sales:4000
-
 Movie: Thor: Ragnarok
 Movie Type:normal
 Movie Director: Taika Waititi
@@ -25,3 +24,16 @@ overall rating: 4.9
 show start: today
 end of showing: 21/11/2017
 total sales: counting
+Movie: The Promise
+Movie Type: Horror
+Movie Director: Sophon Sakdaphisit
+Cast: Numthip Jongrachatawiboon
+Synopsis: In 1997, the financial crash, known in Thailand as the Tom Yum Goong Crisis, was a disastrous event that crept over Asia and left billionaires bankrupt overnight.
+Movie Status: Now Showing
+Showtimes: 10:00 16:00 20:00 21:00 00:00
+Movie Class: Digital
+Past Reviews: scary
+Overall Rating: 4.5
+Show Start: today
+End of Showing: 22/11/2017
+Total Sales: 4000
