@@ -100,9 +100,15 @@ public class FileIOController {
         }
     }
 
+    /**
+     * Opens a handle to specified file with filename and starts
+     * in APPEND MODE, i.e. all data is written to the file while retaining existing data
+     * @param data
+     * @param filename
+     */
     public static void writeFile(String data, String filename) {
         try {
-            FileWriter fileWriter = new FileWriter(filename);
+            FileWriter fileWriter = new FileWriter(filename,true);
             BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
             bufferedWriter.write(data);
             bufferedWriter.close();
