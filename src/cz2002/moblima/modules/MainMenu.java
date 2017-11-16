@@ -2,6 +2,7 @@ package cz2002.moblima.modules;
 
 import cz2002.moblima.controllers.MovieController;
 import cz2002.moblima.entities.Movie;
+import cz2002.moblima.entities.MovieDisplay;
 import cz2002.moblima.entities.Cineplexes;
 import cz2002.moblima.entities.Review;
 import cz2002.moblima.entities.User;
@@ -14,9 +15,13 @@ import java.util.Scanner;
 public class MainMenu {
 	
 	/*you can access the user Id through the method .getUserId(); however, the class contains no email.
-	The reviews are independent form the user logged in.
-	We are not required to publish the review history, given a user, therefore it is not a problem*/
+	The reviews are independent form the user logged in.*/
 	private static ArrayList<User> allUsers = new ArrayList<User>();
+	//Read the movies from file
+	private static ArrayList<Movie> movieArrayList = MovieController.getInstance().getListOfMovies();
+	//Read the movieDiplays from file
+    //The movieDisplays are containing a link to the movie they are associated to.
+	private static ArrayList<MovieDisplay> movieDisplayArrayList = FileIOController.readMovieDisplayFile(movieArrayList);
 	private static int size;
 	private static boolean loggedIn = false;
 	private static User customerUser;
@@ -34,13 +39,11 @@ public class MainMenu {
         	Ciplxs[i] = new Cineplexes(nbrCinemas, i, nbrSeats);
         }
         
-        //Read the movies from file
-        ArrayList<Movie> movieArrayList = MovieController.getInstance().getListOfMovies();
         
         //Read the users from file
         allUsers = FileIOController.readUserFile();
         size = allUsers.size();
-
+        
         int mainMenuChoice = 0;
 		
 		while(mainMenuChoice != 6){
@@ -71,7 +74,7 @@ public class MainMenu {
 						counter++;
 					}
 					System.out.println();
-					System.out.println("	Enter number to view movie details: ");
+					System.out.println("	Enter number to view movie details and access movie operations: ");
 					//call function to display movie summary
 					int movieChoice = 0;
 					movieChoice = sc.nextInt();
@@ -79,8 +82,7 @@ public class MainMenu {
 					System.out.println("Movie Synopsis : " + movieArrayList.get(movieChoice - 1).getMovieSynopsis());
 					//call movie menu
 					System.out.println();
-					//Change "Thor" to a movie name variable
-					movieMenu(movieArrayList.get(movieChoice - 1).getMovieTitle());
+					movieMenu(movieArrayList.get(movieChoice - 1));
 					break;
 				case(2):
 					System.out.println("	----------- View Booking History -----------");
@@ -122,7 +124,7 @@ public class MainMenu {
 
     private static void staffLogin() {
         ArrayList<String> list = new ArrayList();
-        //FileIOController.readFile(list, "Staff.txt");
+        FileIOController.readFile(list, "Staff.txt");
         ArrayList<User> staffAccounts = new ArrayList<>();
         for (String str : list
                 ) {
@@ -166,7 +168,7 @@ public class MainMenu {
         System.out.println("Staff account successfully created!");
     }
 
-    public static void movieMenu(String movieTitle) {
+    public static void movieMenu(Movie mv) {
         //don't try to close the scanners... if more than one ".close()", it generates errors.
         Scanner sc = new Scanner(System.in);
 		
@@ -191,7 +193,8 @@ public class MainMenu {
 				case(1): 
 					System.out.println("	----------- Book Movie -----------");
 					if(loggedIn) {
-                        SeatAssignmentModule.init();
+						showDisplays(mv);
+                        /*SeatAssignmentModule.init();*/
                         System.out.println("	----------- Your booking is successful! -----------");
 					}else {
 						System.out.println("	Login first to access this option");
@@ -201,7 +204,7 @@ public class MainMenu {
 				case(2):
 					System.out.println("	----------- View All Reviews -----------");
 					//call review function
-                    Review.listAllReviews(movieTitle);
+                    Review.listAllReviews(mv.getMovieTitle());
                     System.out.println("	----------- End Of All Reviews -----------");
 					break;
 				case(3):
@@ -222,7 +225,7 @@ public class MainMenu {
 					sc.nextLine();
 					String movieDesc = sc.nextLine();
                     try {
-                        Review.writeReview(movieTitle, rating, movieDesc, userEmail);
+                        Review.writeReview(mv.getMovieTitle(), rating, movieDesc, userEmail);
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
@@ -244,6 +247,14 @@ public class MainMenu {
 			System.out.println(" ");
 		}
 	}
+    
+    public static void showDisplays(Movie mv) {
+    	for(MovieDisplay mD : movieDisplayArrayList) {
+    		if(mv.getMovieTitle().compareTo(mD.getMovieDisplayed().getMovieTitle())==0) {
+    			System.out.println(mD.getDisplayId()+" "+mD.getMovieDisplayed().getMovieTitle()+" Cinema Code n°"+mD.getCinemaCode());
+    		}
+		} 
+    }
 
     //function for the user login
     public static void userLoginMenu() {
@@ -301,63 +312,4 @@ public class MainMenu {
 
         }
     }
-
-/*
-//function for the user login
-	public static void LogInOutMenu() throws IOException {
-		Scanner sc = new Scanner(System.in);
-		if(loggedIn) {
-			loggedIn = false;
-			System.out.println("	----------- Your were successfully logged out! -----------");
-		}else {
-			System.out.println("	(1) Already registered");
-			System.out.println("	(2) Create a new account");
-			System.out.println("	(3) Back");
-			int choice = 0;
-            int iD;
-			String firstName, lastName, password;
-            choice = sc.nextInt();
-			switch(choice){
-			case(1):
-				System.out.println("	Enter your customer iD");
-				iD = sc.nextInt();
-				System.out.println("	Enter your password");
-				password = sc.next();
-				if(iD>size) {
-					System.out.println("Wrong iD");
-				}else {
-                    if (allUsers.get(iD - 1).getPassword().compareTo(password) != 0) {
-                        System.out.println("Wrong iD or password");
-                        System.out.println(allUsers.get(iD - 1).getPassword());
-                    } else {
-                        customerUser = allUsers.get(iD-1);
-						loggedIn = true;
-						System.out.println("	----------- Your were succesfully logged in -----------");
-					}
-				}
-				break;
-			case(2):
-				System.out.println("	Enter your first name");
-				firstName = sc.next();
-				System.out.println("	Enter your last name");
-				lN = sc.next();
-				System.out.println("	Enter a password");
-				password = sc.next();
-				customerUser = new User(allUsers.size()+1, firstName, lN, password);
-				loggedIn = true;
-				allUsers.add(customerUser);
-				FileIOController.addUsers(allUsers);
-				size++;
-				System.out.println("	----------- Your have succesfully created an account -----------");
-				System.out.println("	----------- Your customer iD is : "+customerUser.getUserID()+" -----------");
-				break;
-			case(3):
-				break;
-			default:
-				System.out.println("Invalid input");
-			}
-		}
-	}
-	*/
-
 }
