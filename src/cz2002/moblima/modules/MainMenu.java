@@ -27,7 +27,11 @@ public class MainMenu {
     public static void init() {
         Scanner sc = new Scanner(System.in);
         System.out.println("----------- Welcome to SeatAssignmentModule -----------");
-
+        
+        //LITTLE MODIFICATION
+        // Assignement of the seats
+        FileIOController.assignSeatsFromFile(movieDisplayArrayList);
+        
         // Initialising cineplexes and cinemas
         Cineplexes[] Ciplxs = new Cineplexes[nbrCineplexes];
         for(int i = 0; i <nbrCineplexes; i++) {
@@ -215,24 +219,24 @@ public class MainMenu {
             System.out.println("	(5) Back");
             System.out.println("");
 
-            System.out.print("  	Enter number of your choice: ");
+            System.out.print("  	Enter the number of your choice: ");
             movieMenuChoice = sc.nextInt();
 
             switch (movieMenuChoice) {
                 case (1):
                     System.out.println("	----------- Book Movie -----------");
                     if (loggedIn) {
-                        showDisplays(movie);
-                        MovieDisplay movieDisplay = null;
-                        for (MovieDisplay movieDisplay1: movieDisplayArrayList
-                             ) {
-                            if(movieDisplay1.getMovieDisplayed().getMovieTitle() == movie.getMovieTitle()){
-                                movieDisplay = movieDisplay1;
-                                break;
-                            }
-                        }
+                      ArrayList<MovieDisplay> spefificMovieDisplay = extractDisplays(movie);
+                    	int cnt=1;
+                    	for(MovieDisplay mD:spefificMovieDisplay) {
+                    		System.out.println(cnt + " " + mD.getMovieDisplayed().getMovieTitle() + " Cinema Code n°" + mD.getCinemaCode());
+                    		cnt++;
+                    	}
+                        System.out.println("  	Enter the number associated to the movie display you want to book");
+                        int displayChoice = sc.nextInt();
+                        MovieDisplay chosenDisplay = spefificMovieDisplay.get(displayChoice-1);
                         SeatAssignmentModule seatAssignmentModule = new SeatAssignmentModule();
-                        seatAssignmentModule.init(movie, customerUser,movieDisplay);
+                        seatAssignmentModule.init(movie, customerUser,chosenDisplay);
                         System.out.println("	----------- Your booking is successful! -----------");
                     } else {
                         System.out.println("	Login first to access this option");
@@ -344,11 +348,13 @@ public class MainMenu {
         }
     }
 
-    public static void showDisplays(Movie mv) {
+    public static ArrayList<MovieDisplay> extractDisplays(Movie mv) {
+    	ArrayList<MovieDisplay> specificDisplayList = new ArrayList<MovieDisplay>();
         for (MovieDisplay mD : movieDisplayArrayList) {
-            if (mv.getMovieTitle().compareTo(mD.getMovieDisplayed().getMovieTitle()) == 0) {
-                System.out.println(mD.getDisplayId() + " " + mD.getMovieDisplayed().getMovieTitle() + " Cinema Code nÂ°" + mD.getCinemaCode());
-            }
+        	if (mv.getMovieTitle().compareTo(mD.getMovieDisplayed().getMovieTitle()) == 0) {
+        		specificDisplayList.add(mD);
+        	}
         }
+        return specificDisplayList;
     }
 }

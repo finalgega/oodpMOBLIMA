@@ -193,7 +193,7 @@ public class FileIOController {
             System.err.println(e);
         }
     }
-
+	
 	public static ArrayList<MovieDisplay> readMovieDisplayFile(ArrayList<Movie> MovieList) {
         ArrayList<MovieDisplay> mDL = new ArrayList<MovieDisplay>();
         try {
@@ -212,12 +212,12 @@ public class FileIOController {
                 Movie m;
                 j = 0;
                 do {
-                    m = MovieList.get(j);
-                    j++;
-                } while (m.getMovieTitle().compareTo(splitLine[3].replace("_", " ")) != 0 && j < MovieList.size());
-                if (m.getMovieTitle().compareTo(splitLine[3].replace("_", " ")) == 0) {
-                    mD = new MovieDisplay(Integer.valueOf(splitLine[0]), Integer.valueOf(splitLine[1]), m, splitLine[2], df.parse(splitLine[4] + " " + splitLine[5]));
-                    mDL.add(mD);
+                	m = MovieList.get(j);
+                	j++;
+                }while(m.getMovieTitle().compareTo(splitLine[3].replace("_", " "))!=0 && j<MovieList.size());
+                if(m.getMovieTitle().compareTo(splitLine[3].replace("_", " "))==0) {
+                	mD = new MovieDisplay(Integer.valueOf(splitLine[0]), Integer.valueOf(splitLine[1]), m, splitLine[2], df.parse(splitLine[4]+" "+splitLine[5]));
+                	mDL.add(mD);
                 }
             }
         } catch (IOException e) {
@@ -227,4 +227,42 @@ public class FileIOController {
         }
         return mDL;
     }
+  
+  	public static void assignSeatsFromFile(ArrayList<MovieDisplay> totalMovieDisplay) {
+		
+		String line;
+		BufferedReader br = null;
+		String delimiter, str;
+		String[] splitted, seatId2parts;
+		int dispId, i, custId;
+		try{
+			br = new BufferedReader(new FileReader(bookingHistFileName));
+			while((line = br.readLine()) != null){
+				delimiter = "/";
+				str = line;
+				splitted = str.split(delimiter);
+				custId = Integer.valueOf(splitted[0].substring(8));
+				dispId = Integer.valueOf(splitted[3].substring(11));
+				i=0;
+				while(i<totalMovieDisplay.size() && totalMovieDisplay.get(i).getDisplayId()!=dispId) {
+					i++;
+				}
+				if(i<totalMovieDisplay.size()) {
+					seatId2parts = splitted[4].substring(8).split("<");
+					totalMovieDisplay.get(i).assignSeat(Integer.valueOf(seatId2parts[0]), seatId2parts[1].charAt(0), custId);
+				}
+			}
+		}
+		catch(Exception e)
+		{ e.printStackTrace();}
+		finally
+		{
+			if (br != null) {
+				try { br.close();} 
+				catch (IOException e) 
+				{e.printStackTrace();}
+			}
+		}
+	}
+
 }
