@@ -25,6 +25,7 @@ public class FileIOController {
 
     private static final String userFileName = "Users.txt";
     private static final String movieDisplayFileName = "movieDisplays.txt";
+    private static final String bookingHistFileName = "BookingHistory.txt";
 	private static final DateFormat df = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
 
     /**
@@ -221,4 +222,41 @@ public class FileIOController {
         }
         return mDL;
     }
+	
+	public static void assignSeatsFromFile(ArrayList<MovieDisplay> totalMovieDisplay) {
+		
+		String line;
+		BufferedReader br = null;
+		String delimiter, str;
+		String[] splitted, seatId2parts;
+		int dispId, i, custId;
+		try{
+			br = new BufferedReader(new FileReader(bookingHistFileName));
+			while((line = br.readLine()) != null){
+				delimiter = "/";
+				str = line;
+				splitted = str.split(delimiter);
+				custId = Integer.valueOf(splitted[0].substring(8));
+				dispId = Integer.valueOf(splitted[3].substring(11));
+				i=0;
+				while(i<totalMovieDisplay.size() && totalMovieDisplay.get(i).getDisplayId()!=dispId) {
+					i++;
+				}
+				if(i<totalMovieDisplay.size()) {
+					seatId2parts = splitted[4].substring(8).split("<");
+					totalMovieDisplay.get(i).assignSeat(Integer.valueOf(seatId2parts[0]), seatId2parts[1].charAt(0), custId);
+				}
+			}
+		}
+		catch(Exception e)
+		{ e.printStackTrace();}
+		finally
+		{
+			if (br != null) {
+				try { br.close();} 
+				catch (IOException e) 
+				{e.printStackTrace();}
+			}
+		}
+	}
 }
