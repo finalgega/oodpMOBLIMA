@@ -4,6 +4,7 @@ public class Cinema {
 
     ///	Think of a format for the code.
     private String cinemaCode;
+    private int cineplexId;
     /**
 	 * The number of seats.
       */
@@ -14,10 +15,13 @@ public class Cinema {
 	 * @param num the number of seats in the cinema.
 	 */ 
 
-	public Cinema(int num){
+	public Cinema(int num, int code, int cinplxId){
+		cineplexId = cinplxId;
+		cinemaCode = String.valueOf(code);
 		numberOfSeats = num;
 	}
 	
+	public String getCinemaCode() {return cinemaCode;}
 	/**
 	* Returns the number of seats in a cinema
 	 @return int - the number of seats in a cinema
