@@ -21,7 +21,5 @@ public class User {
 	
 	public String getLastName() {return lastName;}
 
-    public String getPassword() {
-        return password;
-    }
+	public String getPassword() {return password;}
 }
