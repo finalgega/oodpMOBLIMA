@@ -9,6 +9,29 @@ import java.util.List;
 import java.util.Scanner;
 import java.util.stream.Collectors;
 
+/* searchMovie returns string of all movie info from movies file */
+public static String searchMovie (String userMovieName) {
+	ArrayList<List<String>> listoflists = new ArrayList<List<String>>();
+	ReadFile.readFile(movieListings, movieFile);
+	String moviesString = null;
+	Scanner sc = new Scanner(System.in);
+	int count = 0;
+	for (int j =0; j<movieListings.size(); j=j+13) {
+		 listoflists.add(movieListings.subList(j, j+13));
+		 System.out.println(listoflists.get(count));
+		 count++;
+	}
+	
+	for (int k=0;k<count;k++) {
+		if (listoflists.get(k).get(0).contains(userMovieName)) {
+		moviesString = movieListings.stream().collect(Collectors.joining("\r\n"));
+		System.out.println(moviesString);
+	}
+				
+	}
+	return moviesString;
+}
+
 public class MoviesList {
     private static String MovieTitle;
     private static String MovieType;
