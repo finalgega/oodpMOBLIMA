@@ -29,14 +29,15 @@ public class MovieDisplay {
 	 * Assigns a seat to a customer. 
 	 * @param row - the row number a seat.
 	 * @param c - the letter of an aisle.
-	 * @param cust-id - the customer id.
-	 */ 
-	
-	public void assignSeat(int row, char c, int cust_id){
-		
-		int pos = c - 'a' + 1;
-		
-		Seat targetSeat = null;
+      * @param cust_id - the customer id.
+      *@return status of seat assignment.
+      */
+
+     public boolean assignSeat(int row, char c, int cust_id) {
+         boolean result = false;
+         int pos = c - 'a' + 1;
+
+         Seat targetSeat = null;
 		
 		for(int i = 0; i < seat.length; i++){
 			for(int j = 0; j < seat[0].length; j++){
@@ -49,24 +50,26 @@ public class MovieDisplay {
 		}
 		if(pos > seat[0].length || row > seat.length){
 			System.out.println("No such a seat!");
-			return;
-		}
-		
-		if(targetSeat == null){
+            return result;
+        }
+
+         if(targetSeat == null){
 			System.out.println("No such a seat!");
-			return;
-		}
-		
-		if(targetSeat.isOccupied()){
+            return result;
+        }
+
+         if(targetSeat.isOccupied()){
 			System.out.println("Seat already assigned to a customer. ");
 		}else{
 			targetSeat.assign(cust_id);
-			System.out.println("Seat assigned!");
-		}
-		
-	}
-	
-	 /**
+            result = true;
+        }
+
+         return result;
+
+     }
+
+    /**
 	 * Displays the seats. 
 	 */ 
 	
@@ -101,10 +104,10 @@ public class MovieDisplay {
 	
 	 /**
 	 * Unassigns a seat. 
-	  * @param cust_id - the seat id.
-	 */ 
-	
-	public void unAssignSeat(int seatId){
+      * @param seatId - the seat id.
+      */
+
+     public void unAssignSeat(int seatId){
 		
 		Seat targetSeat = seat[0][0];
 		

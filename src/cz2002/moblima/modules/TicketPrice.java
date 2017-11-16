@@ -2,8 +2,11 @@ package cz2002.moblima.modules;
 
 import cz2002.moblima.entities.Movie;
 import cz2002.moblima.entities.User;
+import cz2002.moblima.utilities.FileIOController;
 
 import java.io.*;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.List;
 import java.util.Scanner;
 
@@ -16,6 +19,7 @@ public class TicketPrice {
 
     private User user;
     private Movie movie;
+    private String seatNumber;
     private int cineplexNumber;
     private int cinemaNumber;
     private static final String FILENAME="movies.txt";
@@ -28,18 +32,23 @@ public class TicketPrice {
     public TicketPrice() {
     }
 
-    public TicketPrice(Movie movie, User user) {
+    public TicketPrice(Movie movie, User user, String seatNumber) {
         this.movie = movie;
         this.user = user;
+        this.seatNumber = seatNumber;
     }
 
-    public boolean initiateBooking() {
+    public boolean writeBookingToFIle() {
+        LocalDate localDate = LocalDate.now();
+        LocalTime localTime = LocalTime.now();
+        String transactionID = "MBM";
+        String transactionInformation = transactionID + localDate + localTime + ">>" + movie.getMovieTitle() + ">>" + ticketprice + "@" + user.getUserID() + "@" + seatNumber + "\n";
+        FileIOController.writeFile(transactionInformation, "bookings.txt");
         return false;
     }
 
 
     public void initiateChargeForTicket() {
-        TicketPrice t=new TicketPrice();
         Boolean flag=true;
         Scanner sc=new Scanner(System.in);
 
@@ -77,6 +86,8 @@ public class TicketPrice {
                 }
             }
         }
+        writeBookingToFIle();
+        System.out.println("Thank you for making your booking!");
         System.exit(0);
     }
 

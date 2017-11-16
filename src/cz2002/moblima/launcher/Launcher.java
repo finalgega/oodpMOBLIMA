@@ -2,6 +2,7 @@ package cz2002.moblima.launcher;
 
 import cz2002.moblima.modules.MainMenu;
 
+
 /**
  * Main entry point class responsible for launching the application
  * and its modules.

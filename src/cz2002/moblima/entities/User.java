@@ -11,7 +11,6 @@ import java.util.Scanner;
 
 public class User {
 
-
     public enum USER_AGE_CATEGORY {
         CHILD,
         ADULT,
@@ -40,7 +39,6 @@ public class User {
     }
 
     private String username;
-
     private String password;
     private String dateOfBirth;
     private USER_AGE_CATEGORY categoryOfUser;
@@ -68,7 +66,6 @@ public class User {
     public String getFirstName() {return firstName;}
 	
 	public String getLastName() {return lastName;}
-
 
     public String getPassword() {
         return password;
@@ -137,5 +134,4 @@ public class User {
 
 
     }
-
 }

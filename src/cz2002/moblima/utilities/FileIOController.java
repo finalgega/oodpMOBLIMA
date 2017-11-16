@@ -95,7 +95,7 @@ public class FileIOController {
 
     public static void writeFile(String data, String filename) {
         try {
-            FileWriter fileWriter = new FileWriter(filename);
+            FileWriter fileWriter = new FileWriter(filename, true);
             BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
             bufferedWriter.write(data);
             bufferedWriter.close();
