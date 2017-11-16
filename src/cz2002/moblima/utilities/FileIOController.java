@@ -187,7 +187,7 @@ public class FileIOController {
             System.err.println(e);
         }
     }
-
+	
 	public static ArrayList<MovieDisplay> readMovieDisplayFile(ArrayList<Movie> MovieList) {
         ArrayList<MovieDisplay> mDL = new ArrayList<MovieDisplay>();
         try {
@@ -208,9 +208,11 @@ public class FileIOController {
                 do {
                 	m = MovieList.get(j);
                 	j++;
-                }while(m.getMovieTitle()!=splitLine[2].replace("_", " ") && j<MovieList.size());
-                mD = new MovieDisplay(Integer.valueOf(splitLine[0]), Integer.valueOf(splitLine[1]), m, splitLine[2], df.parse(splitLine[4]+" "+splitLine[5]));
-                mDL.add(mD);
+                }while(m.getMovieTitle().compareTo(splitLine[3].replace("_", " "))!=0 && j<MovieList.size());
+                if(m.getMovieTitle().compareTo(splitLine[3].replace("_", " "))==0) {
+                	mD = new MovieDisplay(Integer.valueOf(splitLine[0]), Integer.valueOf(splitLine[1]), m, splitLine[2], df.parse(splitLine[4]+" "+splitLine[5]));
+                	mDL.add(mD);
+                }
             }
         } catch (IOException e) {
             System.err.println(e);
