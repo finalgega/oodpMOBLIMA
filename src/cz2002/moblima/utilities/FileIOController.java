@@ -1,5 +1,7 @@
 package cz2002.moblima.utilities;
 
+import cz2002.moblima.entities.Movie;
+import cz2002.moblima.entities.MovieDisplay;
 import cz2002.moblima.entities.User;
 
 import java.io.*;
@@ -8,6 +10,9 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,6 +24,8 @@ import java.util.List;
 public class FileIOController {
 
     private static final String userFileName = "Users.txt";
+    private static final String movieDisplayFileName = "movieDisplays.txt";
+	private static final DateFormat df = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
 
     /**
      * Attempts to open a handle to the specified file and adds the data stream to the list
@@ -95,7 +102,7 @@ public class FileIOController {
 
     public static void writeFile(String data, String filename) {
         try {
-            FileWriter fileWriter = new FileWriter(filename, true);
+            FileWriter fileWriter = new FileWriter(filename);
             BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
             bufferedWriter.write(data);
             bufferedWriter.close();
@@ -110,18 +117,18 @@ public class FileIOController {
     }
 
     public static void addUsers(ArrayList<User> uL) {
-        File file = new File(userFileName);
-        Path myText_path = Paths.get(file.toURI());
+        File f = new File(userFileName);
+        Path myText_path = Paths.get(f.toURI());
         Charset charset = Charset.forName("UTF-8");
         ArrayList<String> lines = new ArrayList<>();
-        User user;
+        User u;
         for (int i = 0; i < uL.size(); i++) {
-            user = uL.get(i);
-            lines.add(String.valueOf(user.getUserID()) + " " + user.getFirstName() + " " + user.getLastName() + " " + user.getPassword() + " " + user.getDateOfBirth());
+            u = uL.get(i);
+            lines.add(String.valueOf(u.getUserID()) + " " + u.getFirstName() + " " + u.getLastName()+ " " + u.getPassword());
         }
 
         try {
-            file.createNewFile();
+            f.createNewFile();
             Files.write(myText_path, lines, charset, StandardOpenOption.APPEND);
         } catch (IOException e) {
             System.err.println(e);
@@ -144,26 +151,72 @@ public class FileIOController {
     }
 
     public static ArrayList<User> readUserFile() {
-        ArrayList<User> userArrayList = new ArrayList<User>();
+        ArrayList<User> uL = new ArrayList<User>();
         try {
-            File file = new File(userFileName);
-            Path myText_path = Paths.get(file.toURI());
+            File f = new File(userFileName);
+            Path myText_path = Paths.get(f.toURI());
             List<String> listS = Files.readAllLines(myText_path);
             String[] splitLine;
-            User user;
+            User u;
             for (int i = 0; i < listS.size(); i++) {
                 splitLine = listS.get(i).split(" ");
-                if (splitLine.length == 6)
-                    user = new User(Integer.valueOf(splitLine[0]), splitLine[1], splitLine[2], splitLine[3], splitLine[4]);
-                else
-                    user = new User(Integer.valueOf(splitLine[0]), splitLine[1], splitLine[2], splitLine[3]);
-                userArrayList.add(user);
+                if (splitLine.length<=1){
+                	return uL;
+                }
+                u = new User(Integer.valueOf(splitLine[0]), splitLine[1], splitLine[2], splitLine[3]);
+                uL.add(u);
             }
         } catch (IOException e) {
             System.err.println(e);
         }
-        return userArrayList;
+        return uL;
     }
 
+	public static void addMovieDisplay(MovieDisplay mD) {
+        File f = new File(movieDisplayFileName);
+        Path myText_path = Paths.get(f.toURI());
+        Charset charset = Charset.forName("UTF-8");
+        ArrayList<String> lines = new ArrayList<>();
+        lines.add(String.valueOf(mD.getDisplayId())+" "+String.valueOf(mD.getSeatsNumber())+" "+mD.getCinemaCode()+" "+
+        mD.getMovieDisplayed().getMovieTitle().replace(" ", "_")+" "+df.format(mD.getDateDisplayed()));
 
+        try {
+            f.createNewFile();
+            Files.write(myText_path, lines, charset, StandardOpenOption.APPEND);
+        } catch (IOException e) {
+            System.err.println(e);
+        }
+    }
+
+	public static ArrayList<MovieDisplay> readMovieDisplayFile(ArrayList<Movie> MovieList) {
+        ArrayList<MovieDisplay> mDL = new ArrayList<MovieDisplay>();
+        try {
+            File f = new File(movieDisplayFileName);
+            Path myText_path = Paths.get(f.toURI());
+            List<String> listS = Files.readAllLines(myText_path);
+            String[] splitLine;
+            MovieDisplay mD;
+            int j;
+            for (int i = 0; i < listS.size(); i++) {
+                splitLine = listS.get(i).split(" ");
+                if (splitLine.length<=1){
+                	return mDL;
+                }
+                //find movie
+                Movie m;
+                j = 0;
+                do {
+                	m = MovieList.get(j);
+                	j++;
+                }while(m.getMovieTitle()!=splitLine[2].replace("_", " ") && j<MovieList.size());
+                mD = new MovieDisplay(Integer.valueOf(splitLine[0]), Integer.valueOf(splitLine[1]), m, splitLine[2], df.parse(splitLine[4]+" "+splitLine[5]));
+                mDL.add(mD);
+            }
+        } catch (IOException e) {
+            System.err.println(e);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return mDL;
+    }
 }
