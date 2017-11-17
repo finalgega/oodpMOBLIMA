@@ -22,8 +22,8 @@ public class MovieController {
         ArrayList<String> movies = new ArrayList<String>();
         ArrayList<Movie> movieArrayList = new ArrayList<Movie>();
         FileIOController.readFile(movies, movieFile);
-        for (int i = 0; i < movies.size(); i += 13) {
-            Movie movie = new Movie(movies.get(i).substring(7), movies.get(i + 1), movies.get(i + 2), movies.get(i + 3), movies.get(i + 4), movies.get(i + 5), movies.get(i + 6), movies.get(i + 7), movies.get(i + 8), movies.get(i + 9), movies.get(i + 10), movies.get(i + 11), movies.get(i + 12));
+        for (int i = 0; i < movies.size(); i += 12) {
+            Movie movie = new Movie(movies.get(i).substring(7), movies.get(i + 1), movies.get(i + 2), movies.get(i + 3), movies.get(i + 4), movies.get(i + 5), movies.get(i + 6), movies.get(i + 7), movies.get(i + 8), movies.get(i + 9), movies.get(i + 10), movies.get(i + 11));
             movieArrayList.add(movie);
         }
 
