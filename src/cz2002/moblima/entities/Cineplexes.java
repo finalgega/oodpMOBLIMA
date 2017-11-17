@@ -19,7 +19,7 @@ public class Cineplexes {
     	cineplexId = cinplxId;
     	cinemaArrayList = new ArrayList<Cinema>();
         for (int i = 0; i < numOfCinemas; i++) {
-            this.cinemaArrayList.add(new Cinema(numOfSeatsInCinema, cineplexId*10+i, cineplexId));
+            this.cinemaArrayList.add(new Cinema(numOfSeatsInCinema, (cineplexId+1)*10+(i+1), cineplexId));
         }
     }
 }

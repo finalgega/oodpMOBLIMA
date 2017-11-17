@@ -14,9 +14,8 @@ public class Movie {
     private String overallRating;
     private String showStart;
     private String showEnd;
-    private String totalSales;
 
-    public Movie(String movieTitle, String movieType, String movieDirector, String movieCast, String movieSynopsis, String movieStatus, String movieShowtimes, String movieClass, String movieReviews, String overallRating, String showStart, String showEnd, String totalSales) {
+    public Movie(String movieTitle, String movieType, String movieDirector, String movieCast, String movieSynopsis, String movieStatus, String movieShowtimes, String movieClass, String movieReviews, String overallRating, String showStart, String showEnd) {
         this.movieTitle = movieTitle;
         this.movieType = movieType;
         this.movieDirector = movieDirector;
@@ -29,12 +28,11 @@ public class Movie {
         this.overallRating = overallRating;
         this.showStart = showStart;
         this.showEnd = showEnd;
-        this.totalSales = totalSales;
     }
 
 
 
-    public Movie(String movieTitle, String movieType, String movieDirector, String movieCast, String movieSynopsis, String movieStatus, String movieShowtimes, String movieReviews, String overallRating, String showStart, String showEnd, String totalSales) {
+    public Movie(String movieTitle, String movieType, String movieDirector, String movieCast, String movieSynopsis, String movieStatus, String movieShowtimes, String movieReviews, String overallRating, String showStart, String showEnd) {
         this.movieTitle = movieTitle;
         this.movieType = movieType;
         this.movieDirector = movieDirector;
@@ -46,7 +44,6 @@ public class Movie {
         this.overallRating = overallRating;
         this.showStart = showStart;
         this.showEnd = showEnd;
-        this.totalSales = totalSales;
     }
 
     public Movie(String movieTitle, String movieType, String movieDirector, String movieCast, String movieSynopsis, String movieStatus, String movieShowtimes, String movieReviews) {
@@ -91,5 +88,4 @@ public class Movie {
     public String getMovieReviews() {
         return movieReviews;
     }
-
 }

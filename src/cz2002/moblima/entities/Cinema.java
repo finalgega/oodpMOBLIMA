@@ -17,7 +17,8 @@ public class Cinema {
 
 	public Cinema(int num, int code, int cinplxId){
 		cineplexId = cinplxId;
-		cinemaCode = String.valueOf(code);
+		cinemaCode = "C"+String.valueOf(code);
+		System.out.println(cinemaCode);
 		numberOfSeats = num;
 	}
 	
