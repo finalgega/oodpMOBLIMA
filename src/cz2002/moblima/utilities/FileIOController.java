@@ -3,6 +3,8 @@ package cz2002.moblima.utilities;
 import cz2002.moblima.entities.Movie;
 import cz2002.moblima.entities.MovieDisplay;
 import cz2002.moblima.entities.User;
+import cz2002.moblima.modules.MainMenu;
+import cz2002.moblima.modules.TicketPrice;
 
 import java.io.*;
 import java.nio.charset.Charset;
@@ -111,6 +113,7 @@ public class FileIOController {
         try {
             FileWriter fileWriter = new FileWriter(filename,true);
             BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
+            bufferedWriter.newLine();
             bufferedWriter.write(data);
             bufferedWriter.close();
         } catch (FileNotFoundException e) {
@@ -228,42 +231,77 @@ public class FileIOController {
         }
         return mDL;
     }
-  
-  	public static void assignSeatsFromFile(ArrayList<MovieDisplay> totalMovieDisplay) {
-		
-		String line;
-		BufferedReader br = null;
-		String delimiter, str;
-		String[] splitted, seatId2parts;
-		int dispId, i, custId;
-		try{
-			br = new BufferedReader(new FileReader(bookingHistFileName));
-			while((line = br.readLine()) != null){
-				delimiter = "/";
-				str = line;
-				splitted = str.split(delimiter);
-				custId = Integer.valueOf(splitted[0].substring(8));
-				dispId = Integer.valueOf(splitted[3].substring(11));
-				i=0;
-				while(i<totalMovieDisplay.size() && totalMovieDisplay.get(i).getDisplayId()!=dispId) {
-					i++;
+  	
+  	public static void initSeats() {
+    	ArrayList<MovieDisplay> totalMovieDisplay = MainMenu.getAllDisplay();
+        ArrayList<String> bookingInformation = new ArrayList<>();
+        FileIOController.readFile(bookingInformation, "bookings.txt");
+        String[] data;
+        String[] seatDetails;
+        int custId = 0;
+        int displayID = 0;
+        int j;
+        for (int i = 0; i < bookingInformation.size(); i++) {
+                data = bookingInformation.get(i).split("/");
+                custId = Integer.parseInt(data[TicketPrice.USER_ID_INDEX]);
+                displayID = Integer.parseInt(data[TicketPrice.DISPLAY_ID_INDEX]);
+                seatDetails=data[TicketPrice.SEAT_ID_INDEX].split("<");
+                j=0;
+                while(j<totalMovieDisplay.size() && totalMovieDisplay.get(j).getDisplayId()!=displayID) {
+					j++;
 				}
 				if(i<totalMovieDisplay.size()) {
-					seatId2parts = splitted[4].substring(8).split("<");
-					totalMovieDisplay.get(i).assignSeat(Integer.valueOf(seatId2parts[0]), seatId2parts[1].charAt(0), custId);
+					totalMovieDisplay.get(j).assignSeat(Integer.parseInt(seatDetails[0]), seatDetails[1].charAt(0), custId);
 				}
-			}
-		}
-		catch(Exception e)
-		{ e.printStackTrace();}
-		finally
-		{
-			if (br != null) {
-				try { br.close();} 
-				catch (IOException e) 
-				{e.printStackTrace();}
-			}
-		}
-	}
+        }
+    }
+  	
+  	public static boolean displayBookingHist(User u) {
+    	ArrayList<MovieDisplay> totalMovieDisplay = MainMenu.getAllDisplay();
+        ArrayList<String> bookingInformation = new ArrayList<>();
+        FileIOController.readFile(bookingInformation, "bookings.txt");
+        String[] data;
+        int custId = 0;
+        int displayID = 0;
+        int j;
+        boolean r = false;
+        for (int i = 0; i < bookingInformation.size(); i++) {
+                data = bookingInformation.get(i).split("/");
+                custId = Integer.parseInt(data[TicketPrice.USER_ID_INDEX]);
+                displayID = Integer.parseInt(data[TicketPrice.DISPLAY_ID_INDEX]);
+                j=0;
+                while(j<totalMovieDisplay.size() && totalMovieDisplay.get(j).getDisplayId()!=displayID) {
+					j++;
+				}
+				if(j<totalMovieDisplay.size() && custId==u.getUserID()) {
+					System.out.println("transaction Id: "+data[0]+ " movie : "+
+							totalMovieDisplay.get(i).getMovieDisplayed().getMovieTitle()+" ticket price: "+data[4]+"$");
+					r = true;
+				}
+        }
+        return r;
+    }
+  	
+  	public static int ticketSalles(Movie m) {
+    	ArrayList<MovieDisplay> totalMovieDisplay = MainMenu.getAllDisplay();
+        ArrayList<String> bookingInformation = new ArrayList<>();
+        FileIOController.readFile(bookingInformation, "bookings.txt");
+        String[] data;
+        int counter = 0;
+        int displayID = 0;
+        int j;
+        for (int i = 0; i < bookingInformation.size(); i++) {
+                data = bookingInformation.get(i).split("/");
+                displayID = Integer.parseInt(data[TicketPrice.DISPLAY_ID_INDEX]);
+                j=0;
+                while(j<totalMovieDisplay.size() && totalMovieDisplay.get(j).getDisplayId()!=displayID) {
+					j++;
+				}
+				if(j<totalMovieDisplay.size() && totalMovieDisplay.get(j).getMovieDisplayed().getMovieTitle().compareTo(m.getMovieTitle())==0) {
+					counter++;
+				}
+        }
+        return counter;
+    }
 
 }
