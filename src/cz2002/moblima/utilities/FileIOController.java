@@ -25,6 +25,7 @@ public class FileIOController {
 
     private static final String userFileName = "Users.txt";
     private static final String movieDisplayFileName = "movieDisplays.txt";
+    private static final String bookingHistFileName = "BookingHistory.txt";
     private static final DateFormat df = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
 
     /**
