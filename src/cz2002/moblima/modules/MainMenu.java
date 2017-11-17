@@ -23,14 +23,18 @@ public class MainMenu {
 	private static int nbrCineplexes = 3; //total number of cineplexes
 	private static int nbrCinemas = 3; //number of cinemas per cineplexes
 	private static int nbrSeats = 80; //number of seats per cinemas
-
+	
+	public static ArrayList<MovieDisplay> getAllDisplay(){
+		return movieDisplayArrayList;
+	}
+	
     public static void init() {
         Scanner sc = new Scanner(System.in);
         System.out.println("----------- Welcome to SeatAssignmentModule -----------");
         
         //LITTLE MODIFICATION
         // Assignement of the seats
-        FileIOController.assignSeatsFromFile(movieDisplayArrayList);
+        FileIOController.initSeats();
         
         // Initialising cineplexes and cinemas
         Cineplexes[] Ciplxs = new Cineplexes[nbrCineplexes];
@@ -45,6 +49,7 @@ public class MainMenu {
 		
 		while(mainMenuChoice != 6){
 			System.out.println("(1) View all movies and access movie operations*");
+			System.out.println(" * book movie, view and publish reviews");
 			System.out.println("(2) View booking history");
 			System.out.println("(3) View top 5 movies by ticket sales");
 			if(!loggedIn) {
@@ -53,9 +58,8 @@ public class MainMenu {
 				System.out.println("(4) Logout from customer account");
 			}
 			System.out.println("(5) Login as staff");
-			System.out.println(" * book movie, view and publish reviews");
-			System.out.println("");
 			System.out.println("(6) Exit");
+			
 			
 			System.out.print("  Enter the number of your choice: ");
 			mainMenuChoice = sc.nextInt();
@@ -80,21 +84,53 @@ public class MainMenu {
                     //call movie menu
                     System.out.println();
                     movieMenu(movieArrayList.get(movieChoice - 1));
+                    break;
                 }
                 case (2): {
-                    System.out.println("	----------- View Booking History -----------");
-                    //get email to display user's booking history
-                    System.out.println("	Enter your email:");
-//					String email = sc.nextLine();
-                    System.out.println("THIS FUNCTION DOES NOT WORK!");
-                    System.out.println("	----------- Your Booking History -----------");
-                    // Display all booking history
-                    // If user has not made any prior booking, return "No booking has been made yet!"
+                	if(loggedIn) {
+	                    System.out.println("	----------- Your Booking History -----------");
+	                    boolean displayedMade = FileIOController.displayBookingHist(customerUser);
+	                    if(!displayedMade) {
+	                    	System.out.println("No booking has been made yet.");
+	                    }
+                	} else {
+                		System.out.println("	Login first to access this option");
+                	}
                     break;
                 }
                 case (3): {
                     System.out.println("	----------- View Top 5 Movies By Ticket Sales -----------");
-                    // Display top 5 movies by ticket sales
+                    Movie[] top5Movie = new Movie[5];
+                    int[] score = new int[5];
+                    int i = 0;
+                    int scoreM;
+                    int firstScore = -1;
+                    for(i=0; i<5; i++) {
+                    	top5Movie[i] = movieArrayList.get(0);
+                    	score[i] = firstScore;
+                    }
+                    for(Movie m : movieArrayList) {
+                    	scoreM = FileIOController.ticketSalles(m);
+                    	if (scoreM>score[0]) {
+                    		top5Movie = shiftRank(top5Movie, 0, m);
+                    		score = shiftRank(score, 0, scoreM);
+                    	}else if(scoreM>score[1]){
+                    		top5Movie = shiftRank(top5Movie, 1, m);
+                    		score = shiftRank(score, 1, scoreM);
+                    	}else if(scoreM>score[2]){
+                    		top5Movie = shiftRank(top5Movie, 2, m);
+                    		score = shiftRank(score, 2, scoreM);
+                    	}else if(scoreM>score[3]){
+                    		top5Movie = shiftRank(top5Movie, 3, m);
+                    		score = shiftRank(score, 3, scoreM);
+                    	}else if(scoreM>score[4]){
+                    		top5Movie = shiftRank(top5Movie, 4, m);
+                    		score = shiftRank(score, 4, scoreM);
+                    	}
+                    }
+                    for(i=0; i<Math.min(movieArrayList.size(),5);i++) {
+                    	System.out.println("Movie: "+top5Movie[i].getMovieTitle()+", total sales: "+score[i]);
+                    }
                     break;
                 }
                 case (4): {
@@ -229,19 +265,18 @@ public class MainMenu {
                       ArrayList<MovieDisplay> spefificMovieDisplay = extractDisplays(movie);
                     	int cnt=1;
                     	for(MovieDisplay mD:spefificMovieDisplay) {
-                    		System.out.println(cnt + " " + mD.getMovieDisplayed().getMovieTitle() + " Cinema Code nÂ°" + mD.getCinemaCode());
-                    		cnt++;
+                			System.out.println(cnt + " " + mD.getMovieDisplayed().getMovieTitle() + " Cinema Code n°" + mD.getCinemaCode());
+                			cnt++;
                     	}
                         System.out.println("  	Enter the number associated to the movie display you want to book");
                         int displayChoice = sc.nextInt();
                         MovieDisplay chosenDisplay = spefificMovieDisplay.get(displayChoice-1);
-                        SeatAssignmentModule seatAssignmentModule = new SeatAssignmentModule();
-                        seatAssignmentModule.init(movie, customerUser,chosenDisplay);
-                        System.out.println("	----------- Your booking is successful! -----------");
+                        System.out.println("Your display : "+chosenDisplay.getDisplayId());
+                        SeatAssignmentModule.bookMenu(movie, customerUser,chosenDisplay);
                     } else {
                         System.out.println("	Login first to access this option");
                     }
-                    System.out.println();
+                    System.out.println("");
                     break;
                 case (2):
                     System.out.println("	----------- View All Reviews -----------");
@@ -351,10 +386,38 @@ public class MainMenu {
     public static ArrayList<MovieDisplay> extractDisplays(Movie mv) {
     	ArrayList<MovieDisplay> specificDisplayList = new ArrayList<MovieDisplay>();
         for (MovieDisplay mD : movieDisplayArrayList) {
-        	if (mv.getMovieTitle().compareTo(mD.getMovieDisplayed().getMovieTitle()) == 0) {
+        	if (mv.getMovieTitle().compareTo(mD.getMovieDisplayed().getMovieTitle()) == 0 &&
+        				mD.getMovieDisplayed().getMovieStatus().compareTo("Movie Status: now showing")==0) {
         		specificDisplayList.add(mD);
         	}
         }
         return specificDisplayList;
     }
+    
+    public static Movie[] shiftRank(Movie[] mTable, int rank, Movie m) {
+    	Movie[] ret = new Movie[mTable.length];
+    	int i;
+    	for(i = 0; i<rank; i++) {
+    		ret[i]=mTable[i];
+    	}
+    	ret[rank]=m;
+    	for(i = rank; i<mTable.length-1; i++) {
+    		ret[i+1]=mTable[i];
+    	}
+    	return ret;
+    }
+    
+    public static int[] shiftRank(int[] sTable, int rank, int s) {
+    	int[] ret = new int[sTable.length];
+    	int i;
+    	for(i = 0; i<rank; i++) {
+    		ret[i]=sTable[i];
+    	}
+    	ret[rank]=s;
+    	for(i = rank; i<sTable.length-1; i++) {
+    		ret[i+1]=sTable[i];
+    	}
+    	return ret;
+    }
+
 }

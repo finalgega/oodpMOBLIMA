@@ -55,23 +55,17 @@ public class TicketPrice {
         FileIOController.writeFile(transactionInformation, "bookings.txt");
     }
 
-    public double calculateTicketPrice()
+    public void calculateTicketPrice()
     {
-        this.ticketprice = chargeWithType(BASE_PRICE);
-        return this.ticketprice;
+        ticketprice = chargeWithType(BASE_PRICE);
     }
 
 
     public void initiateChargeForTicket() {
-        makePayment();
         calculateTicketPrice();
+        System.out.println("Ticket price: "+ticketprice+"$");
         writeBookingToFile();
-        System.out.println("Thank you for making your booking!");
-        System.exit(0);
-    }
-
-    private void makePayment() {
-        System.out.println("Request for payment information.");
+        System.out.println("	----------- Your booking is successful! -----------");
     }
 
     public double chargeWithType(double basePrice){
@@ -129,5 +123,3 @@ public class TicketPrice {
     }
 
 }
-
-
